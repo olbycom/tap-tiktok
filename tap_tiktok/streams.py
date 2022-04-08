@@ -1,11 +1,13 @@
 """Stream type classes for tap-tiktok."""
+import copy
 import json
 import datetime
 import requests
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Iterable, Optional
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 
+from singer_sdk.exceptions import FatalAPIError, RetriableAPIError
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
@@ -277,7 +279,6 @@ IN_APP_EVENT_METRICS = [
 
 class AdsInAppEventMetricsByDayStream(AdsMetricsByDayStream):
     name = "ads_in_app_event_metrics_by_day"
-    tiktok_metrics = IN_APP_EVENT_METRICS
     path = "/"
     primary_keys = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
@@ -287,3 +288,37 @@ class AdsInAppEventMetricsByDayStream(AdsMetricsByDayStream):
     ]
     properties += [th.Property(metric, th.StringType) for metric in IN_APP_EVENT_METRICS]
     schema = th.PropertiesList(*properties).to_dict()
+
+    def request_records(self, context: Optional[dict]) -> Iterable[dict]:
+        next_page_token: Any = None
+        finished = False
+        decorated_request = self.request_decorator(self._request)
+
+        while not finished:
+            rows = {}
+            for i in range(2):
+                chunk_size = len(IN_APP_EVENT_METRICS) // 2
+                self.tiktok_metrics = IN_APP_EVENT_METRICS[chunk_size * i: (i + 1) * chunk_size]
+                prepared_request = self.prepare_request(
+                    context, next_page_token=next_page_token
+                )
+                resp = decorated_request(prepared_request, context)
+                for row in self.parse_response(resp):
+                    primary_key = tuple(row['dimensions'][key] for key in self.primary_keys)
+                    if rows.get(primary_key) is None:
+                        rows[primary_key] = row
+                    else:
+                        rows[primary_key]['metrics'] = {**row['metrics'], **rows[primary_key]['metrics']}
+            for row in rows.values():
+                yield row
+            previous_token = copy.deepcopy(next_page_token)
+            next_page_token = self.get_next_page_token(
+                response=resp, previous_token=previous_token
+            )
+            if next_page_token and next_page_token == previous_token:
+                raise RuntimeError(
+                    f"Loop detected in pagination. "
+                    f"Pagination token {next_page_token} is identical to prior token."
+                )
+            # Cycle until get_next_page_token() no longer returns a value
+            finished = not next_page_token
