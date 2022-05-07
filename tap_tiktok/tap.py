@@ -6,6 +6,9 @@ from singer_sdk import Tap, Stream
 from singer_sdk import typing as th  # JSON schema typing helpers
 
 from tap_tiktok.streams import (
+    CampaignsStream,
+    AdGroupsStream,
+    AdsStream,
     AdsAttributeMetricsByDayStream,
     AdsBasicDataMetricsByDayStream,
     AdsVideoPlayMetricsByDayStream,
@@ -15,6 +18,9 @@ from tap_tiktok.streams import (
     AdsInAppEventMetricsByDayStream
 )
 STREAM_TYPES = [
+    CampaignsStream,
+    AdGroupsStream,
+    AdsStream,
     AdsAttributeMetricsByDayStream,
     AdsBasicDataMetricsByDayStream,
     AdsVideoPlayMetricsByDayStream,
