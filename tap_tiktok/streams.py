@@ -14,6 +14,57 @@ from tap_tiktok.client import TikTokStream
 from tap_tiktok.client import TikTokReportsStream
 
 
+class AdAccountsStream(TikTokStream):
+    name = "ad_accounts"
+    path = "/advertiser/info/"
+    primary_keys = ["id"]
+    records_jsonpath = "$.data[*]"
+    replication_key = None
+    schema = th.PropertiesList(
+        th.Property("id", th.IntegerType),
+        th.Property("name", th.StringType),
+        th.Property("company", th.StringType),
+        th.Property("contacter", th.StringType),
+        th.Property("promotion_area", th.StringType),
+        th.Property("balance", th.NumberType),
+        th.Property("license_province", th.StringType),
+        th.Property("currency", th.StringType),
+        th.Property("promotion_center_city", th.StringType),
+        th.Property("display_timezone", th.StringType),
+        th.Property("email", th.StringType),
+        th.Property("telephone", th.StringType),
+        th.Property("phonenumber", th.StringType),
+        th.Property("language", th.StringType),
+        th.Property("industry", th.StringType),
+        th.Property("create_time", th.IntegerType),
+        th.Property("address", th.StringType),
+        th.Property("role", th.StringType),
+        th.Property("reason", th.StringType),
+        th.Property("promotion_center_province", th.StringType),
+        th.Property("timezone", th.StringType),
+        th.Property("license_url", th.StringType),
+        th.Property("country", th.StringType),
+        th.Property("status", th.StringType),
+        th.Property("brand", th.StringType),
+        th.Property("license_city", th.StringType),
+        th.Property("description", th.StringType),
+        th.Property("license_no", th.StringType),
+    ).to_dict()
+
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        params: dict = {"advertiser_ids": "{advertiser_ids}".format(advertiser_ids=[int(self.config["advertiser_id"])])}
+        if next_page_token:
+            params["page"] = next_page_token
+        return params
+
+    def get_next_page_token(
+        self, response: requests.Response, previous_token: Optional[Any]
+    ) -> Optional[Any]:
+        return None
+
+
 class CampaignsStream(TikTokStream):
     name = "campaigns"
     path = "/campaign/get/"
