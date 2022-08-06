@@ -269,8 +269,8 @@ class AdsMetricsByDayStream(TikTokReportsStream):
         self, response: requests.Response, previous_token: Optional[Any]
     ) -> Optional[Any]:
         """Return a token for identifying next page or None if no more pages."""
-        current_page = self._get_page_info("$.data.page_info.page", response.json())
-        total_pages = self._get_page_info("$.data.page_info.total_page", response.json())
+        current_page = self._get_page_info("$.data.page_info.page", response.json()) or 0
+        total_pages = self._get_page_info("$.data.page_info.total_page", response.json()) or 0
         start_date = datetime.datetime.strptime(parse_qs(urlparse(response.request.url).query)['start_date'][0],DATE_FORMAT)
         yesterday = datetime.datetime.now(tz=start_date.tzinfo) - datetime.timedelta(days=1)
         end_date = datetime.datetime.strptime(parse_qs(urlparse(response.request.url).query)['end_date'][0], DATE_FORMAT)
