@@ -305,6 +305,16 @@ class AdsAttributeMetricsStream(AdsMetricsByDayStream):
     properties += [th.Property(metric, th.NumberType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
     schema = th.PropertiesList(*properties).to_dict()
 
+    def get_next_page_token(
+        self, response: requests.Response, previous_token: Optional[Any]
+    ) -> Optional[Any]:
+        """Return a token for identifying next page or None if no more pages."""
+        current_page = self._get_page_info("$.data.page_info.page", response.json()) or 0
+        total_pages = self._get_page_info("$.data.page_info.total_page", response.json()) or 0
+        if current_page < total_pages:
+            return {"page": current_page + 1}
+        return None
+
 
 BASIC_DATA_METRICS = [
     "spend",
