@@ -294,7 +294,7 @@ ATTRIBUTE_METRICS = [
 
 
 class AdsAttributeMetricsStream(AdsMetricsByDayStream):
-    name = "ads_attribute_metrics_by_day"
+    name = "ads_attribute_metrics"
     tiktok_metrics = ATTRIBUTE_METRICS
     path = "/"
     primary_keys = ["ad_id"]
@@ -304,6 +304,23 @@ class AdsAttributeMetricsStream(AdsMetricsByDayStream):
     ]
     properties += [th.Property(metric, th.NumberType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
     schema = th.PropertiesList(*properties).to_dict()
+
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        """Return a dictionary of values to be used in URL parameterization."""
+        params: dict = {
+            "page_size": 10,
+            "advertiser_id": self.config.get("advertiser_id"),
+            "service_type": "AUCTION",
+            "report_type": "BASIC",
+            "data_level": "AUCTION_AD",
+            "dimensions": json.dumps(["ad_id", "stat_time_day"]),
+            "metrics": json.dumps(self.tiktok_metrics)
+        }
+        if next_page_token:
+            params["page"] = next_page_token["page"]
+        return params
 
     def get_next_page_token(
         self, response: requests.Response, previous_token: Optional[Any]
