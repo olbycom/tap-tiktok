@@ -293,15 +293,14 @@ ATTRIBUTE_METRICS = [
 ]
 
 
-class AdsAttributeMetricsByDayStream(AdsMetricsByDayStream):
+class AdsAttributeMetricsStream(AdsMetricsByDayStream):
     name = "ads_attribute_metrics_by_day"
     tiktok_metrics = ATTRIBUTE_METRICS
     path = "/"
-    primary_keys = ["ad_id", "stat_time_day"]
-    replication_key = "stat_time_day"
+    primary_keys = ["ad_id"]
+    replication_key = None
     properties = [
         th.Property("ad_id", th.IntegerType),
-        th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.NumberType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
     schema = th.PropertiesList(*properties).to_dict()
