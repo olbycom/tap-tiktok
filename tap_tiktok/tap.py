@@ -16,7 +16,14 @@ from tap_tiktok.streams import (
     AdsEngagementMetricsByDayStream,
     AdsAttributionMetricsByDayStream,
     AdsPageEventMetricsByDayStream,
-    AdsInAppEventMetricsByDayStream
+    AdsInAppEventMetricsByDayStream,
+    CampaignsAttributeMetricsStream,
+    CampaignsBasicDataMetricsByDayStream,
+    CampaignsVideoPlayMetricsByDayStream,
+    CampaignsEngagementMetricsByDayStream,
+    CampaignsAttributionMetricsByDayStream,
+    CampaignsPageEventMetricsByDayStream,
+    CampaignsInAppEventMetricsByDayStream
 )
 STREAM_TYPES = [
     AdAccountsStream,
@@ -29,7 +36,14 @@ STREAM_TYPES = [
     AdsEngagementMetricsByDayStream,
     AdsAttributionMetricsByDayStream,
     AdsPageEventMetricsByDayStream,
-    AdsInAppEventMetricsByDayStream
+    AdsInAppEventMetricsByDayStream,
+    CampaignsAttributeMetricsStream,
+    CampaignsBasicDataMetricsByDayStream,
+    CampaignsVideoPlayMetricsByDayStream,
+    CampaignsEngagementMetricsByDayStream,
+    CampaignsAttributionMetricsByDayStream,
+    CampaignsPageEventMetricsByDayStream,
+    CampaignsInAppEventMetricsByDayStream
 ]
 
 

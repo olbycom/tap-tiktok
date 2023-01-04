@@ -234,6 +234,8 @@ STEP_NUM_DAYS = 30
 
 class AdsMetricsByDayStream(TikTokReportsStream):
     tiktok_metrics = []
+    data_level = "AUCTION_AD"
+    dimensions = ["ad_id", "stat_time_day"]
 
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
@@ -250,8 +252,8 @@ class AdsMetricsByDayStream(TikTokReportsStream):
             "advertiser_id": self.config.get("advertiser_id"),
             "service_type": "AUCTION",
             "report_type": "BASIC",
-            "data_level": "AUCTION_AD",
-            "dimensions": json.dumps(["ad_id", "stat_time_day"]),
+            "data_level": self.data_level,
+            "dimensions": json.dumps(self.dimensions),
             "metrics": json.dumps(self.tiktok_metrics),
             "start_date": start_date.strftime(DATE_FORMAT),
             "end_date": end_date.strftime(DATE_FORMAT)
@@ -285,6 +287,11 @@ class AdsMetricsByDayStream(TikTokReportsStream):
                 "start_date": min(end_date + datetime.timedelta(days=1), yesterday).strftime(DATE_FORMAT)
             }
         return None
+
+
+class CampaignMetricsByDayStream(AdsMetricsByDayStream):
+    data_level = "AUCTION_CAMPAIGN"
+    dimensions = ["campaign_id", "stat_time_day"]
 
 
 ATTRIBUTE_METRICS = [
@@ -333,6 +340,46 @@ class AdsAttributeMetricsStream(AdsMetricsByDayStream):
         return None
 
 
+class CampaignsAttributeMetricsStream(CampaignMetricsByDayStream):
+    name = "campaigns_attribute_metrics"
+    tiktok_metrics = ATTRIBUTE_METRICS
+    path = "/"
+    primary_keys = ["campaign_id"]
+    replication_key = None
+    properties = [
+        th.Property("campaign_id", th.IntegerType),
+    ]
+    properties += [th.Property(metric, th.NumberType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
+    schema = th.PropertiesList(*properties).to_dict()
+
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        """Return a dictionary of values to be used in URL parameterization."""
+        params: dict = {
+            "page_size": 10,
+            "advertiser_id": self.config.get("advertiser_id"),
+            "service_type": "AUCTION",
+            "report_type": "BASIC",
+            "data_level": "AUCTION_CAMPAIGN",
+            "dimensions": json.dumps(["campaign_id", "stat_time_day"]),
+            "metrics": json.dumps(self.tiktok_metrics)
+        }
+        if next_page_token:
+            params["page"] = next_page_token["page"]
+        return params
+
+    def get_next_page_token(
+        self, response: requests.Response, previous_token: Optional[Any]
+    ) -> Optional[Any]:
+        """Return a token for identifying next page or None if no more pages."""
+        current_page = self._get_page_info("$.data.page_info.page", response.json()) or 0
+        total_pages = self._get_page_info("$.data.page_info.total_page", response.json()) or 0
+        if current_page < total_pages:
+            return {"page": current_page + 1}
+        return None
+
+
 BASIC_DATA_METRICS = [
     "spend",
     # "cash_spend", "voucher_spend", # unsupported
@@ -352,6 +399,20 @@ class AdsBasicDataMetricsByDayStream(AdsMetricsByDayStream):
     replication_key = "stat_time_day"
     properties = [
         th.Property("ad_id", th.IntegerType),
+        th.Property("stat_time_day", th.DateTimeType),
+    ]
+    properties += [th.Property(metric, th.StringType) for metric in BASIC_DATA_METRICS]
+    schema = th.PropertiesList(*properties).to_dict()
+
+
+class CampaignsBasicDataMetricsByDayStream(CampaignMetricsByDayStream):
+    name = "campaigns_basic_data_metrics_by_day"
+    tiktok_metrics = BASIC_DATA_METRICS
+    path = "/"
+    primary_keys = ["campaign_id", "stat_time_day"]
+    replication_key = "stat_time_day"
+    properties = [
+        th.Property("campaign_id", th.IntegerType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in BASIC_DATA_METRICS]
@@ -378,6 +439,20 @@ class AdsVideoPlayMetricsByDayStream(AdsMetricsByDayStream):
     schema = th.PropertiesList(*properties).to_dict()
 
 
+class CampaignsVideoPlayMetricsByDayStream(CampaignMetricsByDayStream):
+    name = "campaigns_video_play_metrics_by_day"
+    tiktok_metrics = VIDEO_PLAY_METRICS
+    path = "/"
+    primary_keys = ["campaign_id", "stat_time_day"]
+    replication_key = "stat_time_day"
+    properties = [
+        th.Property("campaign_id", th.IntegerType),
+        th.Property("stat_time_day", th.DateTimeType),
+    ]
+    properties += [th.Property(metric, th.StringType) for metric in VIDEO_PLAY_METRICS]
+    schema = th.PropertiesList(*properties).to_dict()
+
+
 ENGAGEMENT_METRICS = [
     "profile_visits", "profile_visits_rate", "likes", "comments", "shares", "follows", "clicks_on_music_disc"
 ]
@@ -391,6 +466,20 @@ class AdsEngagementMetricsByDayStream(AdsMetricsByDayStream):
     replication_key = "stat_time_day"
     properties = [
         th.Property("ad_id", th.IntegerType),
+        th.Property("stat_time_day", th.DateTimeType),
+    ]
+    properties += [th.Property(metric, th.StringType) for metric in ENGAGEMENT_METRICS]
+    schema = th.PropertiesList(*properties).to_dict()
+
+
+class CampaignsEngagementMetricsByDayStream(CampaignMetricsByDayStream):
+    name = "campaigns_engagement_metrics_by_day"
+    tiktok_metrics = ENGAGEMENT_METRICS
+    path = "/"
+    primary_keys = ["campaign_id", "stat_time_day"]
+    replication_key = "stat_time_day"
+    properties = [
+        th.Property("campaign_id", th.IntegerType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in ENGAGEMENT_METRICS]
@@ -412,6 +501,20 @@ class AdsAttributionMetricsByDayStream(AdsMetricsByDayStream):
     replication_key = "stat_time_day"
     properties = [
         th.Property("ad_id", th.IntegerType),
+        th.Property("stat_time_day", th.DateTimeType),
+    ]
+    properties += [th.Property(metric, th.StringType) for metric in ATTRIBUTION_METRICS]
+    schema = th.PropertiesList(*properties).to_dict()
+
+
+class CampaignsAttributionMetricsByDayStream(CampaignMetricsByDayStream):
+    name = "campaigns_attribution_metrics_by_day"
+    tiktok_metrics = ATTRIBUTION_METRICS
+    path = "/"
+    primary_keys = ["campaign_id", "stat_time_day"]
+    replication_key = "stat_time_day"
+    properties = [
+        th.Property("campaign_id", th.IntegerType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in ATTRIBUTION_METRICS]
@@ -446,6 +549,20 @@ class AdsPageEventMetricsByDayStream(AdsMetricsByDayStream):
     replication_key = "stat_time_day"
     properties = [
         th.Property("ad_id", th.IntegerType),
+        th.Property("stat_time_day", th.DateTimeType),
+    ]
+    properties += [th.Property(metric, th.StringType) for metric in PAGE_EVENT_METRICS]
+    schema = th.PropertiesList(*properties).to_dict()
+
+
+class CampaignsPageEventMetricsByDayStream(CampaignMetricsByDayStream):
+    name = "campaigns_page_event_metrics_by_day"
+    tiktok_metrics = PAGE_EVENT_METRICS
+    path = "/"
+    primary_keys = ["campaign_id", "stat_time_day"]
+    replication_key = "stat_time_day"
+    properties = [
+        th.Property("campaign_id", th.IntegerType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in PAGE_EVENT_METRICS]
@@ -492,6 +609,53 @@ class AdsInAppEventMetricsByDayStream(AdsMetricsByDayStream):
     replication_key = "stat_time_day"
     properties = [
         th.Property("ad_id", th.IntegerType),
+        th.Property("stat_time_day", th.DateTimeType),
+    ]
+    properties += [th.Property(metric, th.StringType) for metric in IN_APP_EVENT_METRICS]
+    schema = th.PropertiesList(*properties).to_dict()
+
+    def request_records(self, context: Optional[dict]) -> Iterable[dict]:
+        next_page_token: Any = None
+        finished = False
+        decorated_request = self.request_decorator(self._request)
+
+        while not finished:
+            rows = {}
+            for i in range(2):
+                chunk_size = len(IN_APP_EVENT_METRICS) // 2
+                self.tiktok_metrics = IN_APP_EVENT_METRICS[chunk_size * i: (i + 1) * chunk_size]
+                prepared_request = self.prepare_request(
+                    context, next_page_token=next_page_token
+                )
+                resp = decorated_request(prepared_request, context)
+                for row in self.parse_response(resp):
+                    primary_key = tuple(row['dimensions'][key] for key in self.primary_keys)
+                    if rows.get(primary_key) is None:
+                        rows[primary_key] = row
+                    else:
+                        rows[primary_key]['metrics'] = {**row['metrics'], **rows[primary_key]['metrics']}
+            for row in rows.values():
+                yield row
+            previous_token = copy.deepcopy(next_page_token)
+            next_page_token = self.get_next_page_token(
+                response=resp, previous_token=previous_token
+            )
+            if next_page_token and next_page_token == previous_token:
+                raise RuntimeError(
+                    f"Loop detected in pagination. "
+                    f"Pagination token {next_page_token} is identical to prior token."
+                )
+            # Cycle until get_next_page_token() no longer returns a value
+            finished = not next_page_token
+
+
+class CampaignsInAppEventMetricsByDayStream(CampaignMetricsByDayStream):
+    name = "campaigns_in_app_event_metrics_by_day"
+    path = "/"
+    primary_keys = ["campaign_id", "stat_time_day"]
+    replication_key = "stat_time_day"
+    properties = [
+        th.Property("campaign_id", th.IntegerType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in IN_APP_EVENT_METRICS]
