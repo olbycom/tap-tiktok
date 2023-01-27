@@ -69,6 +69,11 @@ class TapTikTok(Tap):
             th.DateTimeType,
             description="The earliest record date to sync"
         ),
+        th.Property(
+            "include_deleted",
+            th.BooleanType,
+            description="If true then deleted status entities will also be returned"
+        )
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:

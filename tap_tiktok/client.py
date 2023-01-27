@@ -15,6 +15,8 @@ class TikTokStream(RESTStream):
 
     records_jsonpath = "$.data.list[*]"
 
+    deleted_status = None
+
     @property
     def http_headers(self) -> dict:
         """Return the http headers needed."""
@@ -47,6 +49,8 @@ class TikTokStream(RESTStream):
         params: dict = {"advertiser_id": self.config["advertiser_id"]}
         if next_page_token:
             params["page"] = next_page_token
+        if self.deleted_status is not None:
+            params["secondary_status"] = self.deleted_status
         params["page_size"] = 10
         return params
 
