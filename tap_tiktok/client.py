@@ -50,7 +50,7 @@ class TikTokStream(RESTStream):
         if next_page_token:
             params["page"] = next_page_token
         if self.deleted_status is not None:
-            params["secondary_status"] = self.deleted_status
+            params["primary_status"] = self.deleted_status
         params["page_size"] = 10
         return params
 
