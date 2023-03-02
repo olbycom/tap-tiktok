@@ -11,7 +11,7 @@ DATE_FORMAT = "%Y-%m-%d"
 
 class TikTokStream(RESTStream):
 
-    url_base = "https://business-api.tiktok.com/open_api/v1.2"
+    url_base = "https://business-api.tiktok.com/open_api/v1.3"
 
     records_jsonpath = "$.data.list[*]"
 
@@ -53,7 +53,7 @@ class TikTokStream(RESTStream):
 
 class TikTokReportsStream(TikTokStream):
 
-    url_base = "https://business-api.tiktok.com/open_api/v1.2/reports/integrated/get/"
+    url_base = "https://business-api.tiktok.com/open_api/v1.3/reports/integrated/get/"
 
     records_jsonpath = "$.data.list[*]"
     next_page_token_jsonpath = "$.page_info.page"
