@@ -54,7 +54,7 @@ class AdAccountsStream(TikTokStream):
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> Dict[str, Any]:
-        params: dict = {"advertiser_ids": "{advertiser_ids}".format(advertiser_ids=[string(self.config["advertiser_id"])])}
+        params: dict = {"advertiser_ids": "{advertiser_ids}".format(advertiser_ids=[str(self.config["advertiser_id"])])}
         if next_page_token:
             params["page"] = next_page_token
         return params
