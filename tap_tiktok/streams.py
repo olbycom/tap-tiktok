@@ -70,7 +70,7 @@ class CampaignsStream(TikTokStream):
     path = "/campaign/get/"
     primary_keys = ["campaign_id"]
     replication_key = None
-    deleted_status = 'ADGROUP_STATUS_CAMPAIGN_DELETE'
+    deleted_status = 'STATUS_DELETE'
     schema = th.PropertiesList(
         th.Property("campaign_id", th.IntegerType),
         th.Property("campaign_name", th.StringType),
@@ -96,7 +96,7 @@ class AdGroupsStream(TikTokStream):
     path = "/adgroup/get/"
     primary_keys = ["adgroup_id"]
     replication_key = None
-    deleted_status = 'ADGROUP_STATUS_DELETE'
+    deleted_status = 'STATUS_DELETE'
     schema = th.PropertiesList(
         th.Property("adgroup_id", th.IntegerType),
         th.Property("age", th.ArrayType(th.StringType)),
@@ -184,7 +184,7 @@ class AdsStream(TikTokStream):
     path = "/ad/get/"
     primary_keys = ["ad_id"]
     replication_key = None
-    deleted_status = 'AD_STATUS_DELETE'
+    deleted_status = 'STATUS_DELETE'
     schema = th.PropertiesList(
         th.Property("ad_id", th.IntegerType),
         th.Property("ad_format", th.StringType),
