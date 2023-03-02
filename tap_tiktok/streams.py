@@ -54,7 +54,7 @@ class AdAccountsStream(TikTokStream):
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> Dict[str, Any]:
-        params: dict = {"advertiser_ids": "{advertiser_ids}".format(advertiser_ids=[int(self.config["advertiser_id"])])}
+        params: dict = {"advertiser_ids": "{advertiser_ids}".format(advertiser_ids=[string(self.config["advertiser_id"])])}
         if next_page_token:
             params["page"] = next_page_token
         return params
@@ -76,7 +76,7 @@ class CampaignsStream(TikTokStream):
         th.Property("campaign_type", th.StringType),
         th.Property("objective", th.StringType),
         th.Property("objective_type", th.StringType),
-        th.Property("advertiser_id", th.IntegerType),
+        th.Property("advertiser_id", th.StringType),
         th.Property("budget_mode", th.StringType),
         th.Property("deep_bid_type", th.StringType),
         th.Property("status", th.StringType),
@@ -139,7 +139,7 @@ class AdGroupsStream(TikTokStream):
         th.Property("bid_type", th.StringType),
         th.Property("app_id", th.IntegerType),
         th.Property("split_test_adgroup_ids", th.ArrayType(th.StringType)),
-        th.Property("advertiser_id", th.IntegerType),
+        th.Property("advertiser_id", th.StringType),
         th.Property("buy_reach", th.IntegerType),
         th.Property("dayparting", th.StringType),
         th.Property("buy_impression", th.IntegerType),
@@ -202,7 +202,7 @@ class AdsStream(TikTokStream):
         th.Property("call_to_action_id", th.StringType),
         th.Property("video_id", th.StringType),
         th.Property("adgroup_name", th.StringType),
-        th.Property("advertiser_id", th.IntegerType),
+        th.Property("advertiser_id", th.StringType),
         th.Property("open_url_type", th.StringType),
         th.Property("creative_type", th.StringType),
         th.Property("landing_page_url", th.StringType),
