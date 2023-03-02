@@ -96,7 +96,7 @@ class AdGroupsStream(TikTokStream):
     primary_keys = ["adgroup_id"]
     replication_key = None
     schema = th.PropertiesList(
-        th.Property("adgroup_id", th.IntegerType),
+        th.Property("adgroup_id", th.StringType),
         th.Property("age", th.ArrayType(th.StringType)),
         th.Property("display_mode", th.StringType),
         th.Property("operation_system", th.ArrayType(th.StringType)),
@@ -138,7 +138,7 @@ class AdGroupsStream(TikTokStream):
         th.Property("ios14_quota_type", th.StringType),
         th.Property("bid_type", th.StringType),
         th.Property("app_id", th.IntegerType),
-        th.Property("split_test_adgroup_ids", th.ArrayType(th.IntegerType)),
+        th.Property("split_test_adgroup_ids", th.ArrayType(th.StringType)),
         th.Property("advertiser_id", th.IntegerType),
         th.Property("buy_reach", th.IntegerType),
         th.Property("dayparting", th.StringType),
@@ -196,7 +196,7 @@ class AdsStream(TikTokStream):
         th.Property("ad_texts", th.StringType),
         th.Property("vast_moat", th.BooleanType),
         th.Property("is_creative_authorized", th.BooleanType),
-        th.Property("adgroup_id", th.IntegerType),
+        th.Property("adgroup_id", th.StringType),
         th.Property("image_ids", th.ArrayType(th.StringType)),
         th.Property("product_ids", th.ArrayType(th.IntegerType)),
         th.Property("call_to_action_id", th.StringType),
@@ -349,7 +349,7 @@ class CampaignsAttributeMetricsStream(CampaignMetricsByDayStream):
     properties = [
         th.Property("campaign_id", th.IntegerType),
     ]
-    properties += [th.Property(metric, th.NumberType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
+    properties += [th.Property(metric, th.StringType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
     schema = th.PropertiesList(*properties).to_dict()
 
     def get_url_params(
