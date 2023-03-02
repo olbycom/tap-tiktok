@@ -54,7 +54,7 @@ class AdAccountsStream(TikTokStream):
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> Dict[str, Any]:
-        params: dict = {"advertiser_ids": "{advertiser_ids}".format(advertiser_ids=[int(self.config["advertiser_id"])])}
+        params: dict = {"advertiser_ids": "{advertiser_ids}".format(advertiser_ids=[str(self.config["advertiser_id"])])}
         if next_page_token:
             params["page"] = next_page_token
         return params
@@ -71,12 +71,12 @@ class CampaignsStream(TikTokStream):
     primary_keys = ["campaign_id"]
     replication_key = None
     schema = th.PropertiesList(
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("campaign_name", th.StringType),
         th.Property("campaign_type", th.StringType),
         th.Property("objective", th.StringType),
         th.Property("objective_type", th.StringType),
-        th.Property("advertiser_id", th.IntegerType),
+        th.Property("advertiser_id", th.StringType),
         th.Property("budget_mode", th.StringType),
         th.Property("deep_bid_type", th.StringType),
         th.Property("status", th.StringType),
@@ -96,7 +96,7 @@ class AdGroupsStream(TikTokStream):
     primary_keys = ["adgroup_id"]
     replication_key = None
     schema = th.PropertiesList(
-        th.Property("adgroup_id", th.IntegerType),
+        th.Property("adgroup_id", th.StringType),
         th.Property("age", th.ArrayType(th.StringType)),
         th.Property("display_mode", th.StringType),
         th.Property("operation_system", th.ArrayType(th.StringType)),
@@ -120,7 +120,7 @@ class AdGroupsStream(TikTokStream):
         th.Property("languages", th.ArrayType(th.StringType)),
         th.Property("rf_predict_cpr", th.NumberType),
         th.Property("deep_bid_type", th.StringType),
-        th.Property("skip_learning_phase", th.IntegerType),
+        th.Property("skip_learning_phase", th.BooleanType),
         th.Property("rf_predict_frequency", th.NumberType),
         th.Property("external_type", th.StringType),
         th.Property("gender", th.StringType),
@@ -138,8 +138,8 @@ class AdGroupsStream(TikTokStream):
         th.Property("ios14_quota_type", th.StringType),
         th.Property("bid_type", th.StringType),
         th.Property("app_id", th.IntegerType),
-        th.Property("split_test_adgroup_ids", th.ArrayType(th.IntegerType)),
-        th.Property("advertiser_id", th.IntegerType),
+        th.Property("split_test_adgroup_ids", th.ArrayType(th.StringType)),
+        th.Property("advertiser_id", th.StringType),
         th.Property("buy_reach", th.IntegerType),
         th.Property("dayparting", th.StringType),
         th.Property("buy_impression", th.IntegerType),
@@ -151,7 +151,7 @@ class AdGroupsStream(TikTokStream):
         th.Property("campaign_name", th.StringType),
         th.Property("rf_buy_type", th.StringType),
         th.Property("device_models", th.ArrayType(th.IntegerType)),
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("device_price", th.ArrayType(th.NumberType)),
         th.Property("schedule_start_time", th.DateTimeType),
         th.Property("placement", th.ArrayType(th.StringType)),
@@ -183,12 +183,12 @@ class AdsStream(TikTokStream):
     primary_keys = ["ad_id"]
     replication_key = None
     schema = th.PropertiesList(
-        th.Property("ad_id", th.IntegerType),
+        th.Property("ad_id", th.StringType),
         th.Property("ad_format", th.StringType),
         th.Property("campaign_name", th.StringType),
         th.Property("external_action", th.StringType),
         th.Property("identity_type", th.StringType),
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("impression_tracking_url", th.StringType),
         th.Property("brand_safety_postbid_partner", th.StringType),
         th.Property("ad_name", th.StringType),
@@ -196,13 +196,13 @@ class AdsStream(TikTokStream):
         th.Property("ad_texts", th.StringType),
         th.Property("vast_moat", th.BooleanType),
         th.Property("is_creative_authorized", th.BooleanType),
-        th.Property("adgroup_id", th.IntegerType),
+        th.Property("adgroup_id", th.StringType),
         th.Property("image_ids", th.ArrayType(th.StringType)),
         th.Property("product_ids", th.ArrayType(th.IntegerType)),
         th.Property("call_to_action_id", th.StringType),
         th.Property("video_id", th.StringType),
         th.Property("adgroup_name", th.StringType),
-        th.Property("advertiser_id", th.IntegerType),
+        th.Property("advertiser_id", th.StringType),
         th.Property("open_url_type", th.StringType),
         th.Property("creative_type", th.StringType),
         th.Property("landing_page_url", th.StringType),
@@ -307,9 +307,9 @@ class AdsAttributeMetricsStream(AdsMetricsByDayStream):
     primary_keys = ["ad_id"]
     replication_key = None
     properties = [
-        th.Property("ad_id", th.IntegerType),
+        th.Property("ad_id", th.StringType),
     ]
-    properties += [th.Property(metric, th.NumberType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
+    properties += [th.Property(metric, th.StringType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
     schema = th.PropertiesList(*properties).to_dict()
 
     def get_url_params(
@@ -349,7 +349,7 @@ class CampaignsAttributeMetricsStream(CampaignMetricsByDayStream):
     properties = [
         th.Property("campaign_id", th.IntegerType),
     ]
-    properties += [th.Property(metric, th.NumberType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
+    properties += [th.Property(metric, th.StringType if metric in ["campaign_id", "adgroup_id"] else th.StringType) for metric in ATTRIBUTE_METRICS]
     schema = th.PropertiesList(*properties).to_dict()
 
     def get_url_params(
@@ -398,7 +398,7 @@ class AdsBasicDataMetricsByDayStream(AdsMetricsByDayStream):
     primary_keys = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("ad_id", th.IntegerType),
+        th.Property("ad_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in BASIC_DATA_METRICS]
@@ -412,7 +412,7 @@ class CampaignsBasicDataMetricsByDayStream(CampaignMetricsByDayStream):
     primary_keys = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in BASIC_DATA_METRICS]
@@ -432,7 +432,7 @@ class AdsVideoPlayMetricsByDayStream(AdsMetricsByDayStream):
     primary_keys = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("ad_id", th.IntegerType),
+        th.Property("ad_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in VIDEO_PLAY_METRICS]
@@ -446,7 +446,7 @@ class CampaignsVideoPlayMetricsByDayStream(CampaignMetricsByDayStream):
     primary_keys = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in VIDEO_PLAY_METRICS]
@@ -465,7 +465,7 @@ class AdsEngagementMetricsByDayStream(AdsMetricsByDayStream):
     primary_keys = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("ad_id", th.IntegerType),
+        th.Property("ad_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in ENGAGEMENT_METRICS]
@@ -479,7 +479,7 @@ class CampaignsEngagementMetricsByDayStream(CampaignMetricsByDayStream):
     primary_keys = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in ENGAGEMENT_METRICS]
@@ -500,7 +500,7 @@ class AdsAttributionMetricsByDayStream(AdsMetricsByDayStream):
     primary_keys = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("ad_id", th.IntegerType),
+        th.Property("ad_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in ATTRIBUTION_METRICS]
@@ -514,7 +514,7 @@ class CampaignsAttributionMetricsByDayStream(CampaignMetricsByDayStream):
     primary_keys = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in ATTRIBUTION_METRICS]
@@ -548,7 +548,7 @@ class AdsPageEventMetricsByDayStream(AdsMetricsByDayStream):
     primary_keys = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("ad_id", th.IntegerType),
+        th.Property("ad_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in PAGE_EVENT_METRICS]
@@ -562,7 +562,7 @@ class CampaignsPageEventMetricsByDayStream(CampaignMetricsByDayStream):
     primary_keys = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in PAGE_EVENT_METRICS]
@@ -608,7 +608,7 @@ class AdsInAppEventMetricsByDayStream(AdsMetricsByDayStream):
     primary_keys = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("ad_id", th.IntegerType),
+        th.Property("ad_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in IN_APP_EVENT_METRICS]
@@ -655,7 +655,7 @@ class CampaignsInAppEventMetricsByDayStream(CampaignMetricsByDayStream):
     primary_keys = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
     properties = [
-        th.Property("campaign_id", th.IntegerType),
+        th.Property("campaign_id", th.StringType),
         th.Property("stat_time_day", th.DateTimeType),
     ]
     properties += [th.Property(metric, th.StringType) for metric in IN_APP_EVENT_METRICS]
