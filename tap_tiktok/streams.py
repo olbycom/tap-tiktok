@@ -120,7 +120,7 @@ class AdGroupsStream(TikTokStream):
         th.Property("languages", th.ArrayType(th.StringType)),
         th.Property("rf_predict_cpr", th.NumberType),
         th.Property("deep_bid_type", th.StringType),
-        th.Property("skip_learning_phase", th.IntegerType),
+        th.Property("skip_learning_phase", th.BooleanType),
         th.Property("rf_predict_frequency", th.NumberType),
         th.Property("external_type", th.StringType),
         th.Property("gender", th.StringType),
