@@ -1,5 +1,6 @@
 """REST client handling, including TikTokStream base class."""
 
+import json
 import requests
 from typing import Any, Dict, Optional
 
@@ -47,6 +48,7 @@ class TikTokStream(RESTStream):
         params: dict = {"advertiser_id": self.config["advertiser_id"]}
         if next_page_token:
             params["page"] = next_page_token
+        params["filtering"] = json.dumps({"primary_status": "STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"})
         params["page_size"] = 10
         return params
 
