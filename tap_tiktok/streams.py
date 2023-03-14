@@ -206,7 +206,7 @@ class AdsStream(TikTokStream):
         th.Property("adgroup_id", th.IntegerType),
         th.Property("image_ids", th.ArrayType(th.StringType)),
         th.Property("product_ids", th.ArrayType(th.IntegerType)),
-        th.Property("call_to_action_id", th.StringType),
+        th.Property("call_to_action_id", th.NumberType),
         th.Property("video_id", th.StringType),
         th.Property("adgroup_name", th.StringType),
         th.Property("advertiser_id", th.IntegerType),
