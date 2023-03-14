@@ -72,6 +72,7 @@ class TapTikTok(Tap):
         th.Property(
             "include_deleted",
             th.BooleanType,
+            default=False,
             description="If true then deleted status entities will also be returned"
         )
     ).to_dict()
