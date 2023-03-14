@@ -113,7 +113,7 @@ class AdGroupsStream(TikTokStream):
         th.Property("modify_time", th.DateTimeType),
         th.Property("placement_type", th.StringType),
         th.Property("is_comment_disable", th.IntegerType),
-        th.Property("audience", th.ArrayType(th.StringType)),
+        th.Property("audience", th.ArrayType(th.IntegerType)),
         th.Property("schedule_end_time", th.DateTimeType),
         th.Property("brand_safety", th.StringType),
         th.Property("daily_retention_ratio", th.NumberType),
