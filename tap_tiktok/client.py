@@ -1,5 +1,6 @@
 """REST client handling, including TikTokStream base class."""
 
+import json
 import requests
 from typing import Any, Dict, Optional
 
