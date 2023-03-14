@@ -169,7 +169,12 @@ class AdGroupsStream(TikTokStream):
         th.Property("feed_type", th.StringType),
         th.Property("schedule_infos", th.StringType),
         th.Property("exclude_custom_actions", th.ArrayType(th.StringType)),
-        th.Property("action_v2", th.ArrayType(th.StringType)),
+        th.Property("action_v2", th.ObjectType(
+            th.Property("action_categories", th.ArrayType(th.IntegerType)),
+            th.Property("action_period", th.IntegerType),
+            th.Property("action_scene", th.StringType),
+            th.Property("user_actions", th.ArrayType(th.StringType)),
+        )),
         th.Property("is_new_structure", th.BooleanType),
         th.Property("schedule_type", th.StringType),
         th.Property("interest_category_v2", th.ArrayType(th.IntegerType)),
