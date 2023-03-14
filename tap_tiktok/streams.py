@@ -101,7 +101,7 @@ class AdGroupsStream(TikTokStream):
         th.Property("display_mode", th.StringType),
         th.Property("operation_system", th.ArrayType(th.StringType)),
         th.Property("creative_material_mode", th.StringType),
-        th.Property("excluded_audience", th.ArrayType(th.StringType)),
+        th.Property("excluded_audience", th.ArrayType(th.IntegerType)),
         th.Property("optimize_goal", th.StringType),
         th.Property("budget_mode", th.StringType),
         th.Property("brand_safety_partner", th.StringType),
