@@ -217,7 +217,7 @@ class AdsStream(TikTokStream):
         th.Property("profile_image", th.StringType),
         th.Property("call_to_action", th.StringType),
         th.Property("identity_id", th.StringType),
-        th.Property("page_id", th.StringType),
+        th.Property("page_id", th.NumberType),
         th.Property("display_name", th.StringType),
         th.Property("opt_status", th.StringType),
         th.Property("playable_url", th.StringType),
