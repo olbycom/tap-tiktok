@@ -244,6 +244,8 @@ class AdsMetricsByDayStream(TikTokReportsStream):
     data_level = "AUCTION_AD"
     dimensions = ["ad_id", "stat_time_day"]
 
+    status_field = "ad_status"
+
     def get_url_params(
         self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> Dict[str, Any]:
@@ -264,7 +266,13 @@ class AdsMetricsByDayStream(TikTokReportsStream):
             "metrics": json.dumps(self.tiktok_metrics),
             "start_date": start_date.strftime(DATE_FORMAT),
             "end_date": end_date.strftime(DATE_FORMAT),
-#             "filtering": json.dumps({"primary_status": "STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"})
+            "filtering": json.dumps([
+                {
+                    'field_name': self.status_field,
+                    'filter_type': 'IN',
+                    'filter_value': json.dumps(["STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"]),
+                }
+            ])
         }
         if next_page_token:
             params["page"] = next_page_token["page"]
@@ -301,7 +309,7 @@ class AdsMetricsByDayStream(TikTokReportsStream):
 class CampaignMetricsByDayStream(AdsMetricsByDayStream):
     data_level = "AUCTION_CAMPAIGN"
     dimensions = ["campaign_id", "stat_time_day"]
-
+    status_field = "campaign_status"
 
 ATTRIBUTE_METRICS = [
     "campaign_name", "objective_type", "campaign_id", "adgroup_name", "placement", "adgroup_id", "ad_name", "ad_text",
@@ -351,6 +359,7 @@ class AdsAttributeMetricsStream(AdsMetricsByDayStream):
 
 class CampaignsAttributeMetricsStream(CampaignMetricsByDayStream):
     name = "campaigns_attribute_metrics"
+    status_field = "campaign_status"
     tiktok_metrics = ATTRIBUTE_METRICS
     path = "/"
     primary_keys = ["campaign_id"]
@@ -416,6 +425,7 @@ class AdsBasicDataMetricsByDayStream(AdsMetricsByDayStream):
 
 class CampaignsBasicDataMetricsByDayStream(CampaignMetricsByDayStream):
     name = "campaigns_basic_data_metrics_by_day"
+    status_field = "campaign_status"
     tiktok_metrics = BASIC_DATA_METRICS
     path = "/"
     primary_keys = ["campaign_id", "stat_time_day"]
@@ -450,6 +460,7 @@ class AdsVideoPlayMetricsByDayStream(AdsMetricsByDayStream):
 
 class CampaignsVideoPlayMetricsByDayStream(CampaignMetricsByDayStream):
     name = "campaigns_video_play_metrics_by_day"
+    status_field = "campaign_status"
     tiktok_metrics = VIDEO_PLAY_METRICS
     path = "/"
     primary_keys = ["campaign_id", "stat_time_day"]
@@ -483,6 +494,7 @@ class AdsEngagementMetricsByDayStream(AdsMetricsByDayStream):
 
 class CampaignsEngagementMetricsByDayStream(CampaignMetricsByDayStream):
     name = "campaigns_engagement_metrics_by_day"
+    status_field = "campaign_status"
     tiktok_metrics = ENGAGEMENT_METRICS
     path = "/"
     primary_keys = ["campaign_id", "stat_time_day"]
@@ -518,6 +530,7 @@ class AdsAttributionMetricsByDayStream(AdsMetricsByDayStream):
 
 class CampaignsAttributionMetricsByDayStream(CampaignMetricsByDayStream):
     name = "campaigns_attribution_metrics_by_day"
+    status_field = "campaign_status"
     tiktok_metrics = ATTRIBUTION_METRICS
     path = "/"
     primary_keys = ["campaign_id", "stat_time_day"]
@@ -566,6 +579,7 @@ class AdsPageEventMetricsByDayStream(AdsMetricsByDayStream):
 
 class CampaignsPageEventMetricsByDayStream(CampaignMetricsByDayStream):
     name = "campaigns_page_event_metrics_by_day"
+    status_field = "campaign_status"
     tiktok_metrics = PAGE_EVENT_METRICS
     path = "/"
     primary_keys = ["campaign_id", "stat_time_day"]
@@ -660,6 +674,7 @@ class AdsInAppEventMetricsByDayStream(AdsMetricsByDayStream):
 
 class CampaignsInAppEventMetricsByDayStream(CampaignMetricsByDayStream):
     name = "campaigns_in_app_event_metrics_by_day"
+    status_field = "campaign_status"
     path = "/"
     primary_keys = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
