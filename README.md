@@ -33,6 +33,11 @@ To obtain an `access_token` you should follow the App creation steps described i
 As for scopes for your App, metrics streams are fed by the Reporting permission set, then data for Campaign, Ad Group,
 and Ads require their respective read permissions.  
 
+Ad Account Management -> Read
+Ads Management -> Read ads/ adgroups/ campaigns
+Reporting -> All
+Tiktok Business -> All
+
 ## Usage
 
 You can easily run `tap-tiktok` by itself or in a pipeline using [Meltano](https://meltano.com/).
