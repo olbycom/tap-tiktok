@@ -125,7 +125,7 @@ class AdGroupsStream(TikTokStream):
         th.Property("external_type", th.StringType),
         th.Property("gender", th.StringType),
         th.Property("category", th.IntegerType),
-        th.Property("pixel_id", th.IntegerType),
+        th.Property("pixel_id", th.StringType),
         th.Property("frequency_schedule", th.IntegerType),
         th.Property("keywords", th.ArrayType(th.NumberType)),
         th.Property("enable_search_result", th.BooleanType),
