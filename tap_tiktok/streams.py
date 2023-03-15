@@ -264,7 +264,7 @@ class AdsMetricsByDayStream(TikTokReportsStream):
             "metrics": json.dumps(self.tiktok_metrics),
             "start_date": start_date.strftime(DATE_FORMAT),
             "end_date": end_date.strftime(DATE_FORMAT),
-            "filtering": json.dumps({"primary_status": "STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"})
+#             "filtering": json.dumps({"primary_status": "STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"})
         }
         if next_page_token:
             params["page"] = next_page_token["page"]
