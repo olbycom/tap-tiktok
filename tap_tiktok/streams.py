@@ -230,7 +230,7 @@ class AdsStream(TikTokStream):
         th.Property("app_name", th.StringType),
         th.Property("status", th.StringType),
         th.Property("create_time", th.DateTimeType),
-        th.Property("card_id", th.NumberType),
+        th.Property("card_id", th.StringType),
         th.Property("fallback_type", th.StringType),
     ).to_dict()
 
