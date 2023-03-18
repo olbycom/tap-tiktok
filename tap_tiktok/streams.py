@@ -17,11 +17,11 @@ from tap_tiktok.client import TikTokReportsStream
 class AdAccountsStream(TikTokStream):
     name = "ad_accounts"
     path = "/advertiser/info/"
-    primary_keys = ["id"]
+    primary_keys = ["advertiser_id"]
     records_jsonpath = "$.data.list[*]"
     replication_key = None
     schema = th.PropertiesList(
-        th.Property("id", th.IntegerType),
+        th.Property("advertiser_id", th.StringType),
         th.Property("name", th.StringType),
         th.Property("company", th.StringType),
         th.Property("contacter", th.StringType),
@@ -49,6 +49,7 @@ class AdAccountsStream(TikTokStream):
         th.Property("license_city", th.StringType),
         th.Property("description", th.StringType),
         th.Property("license_no", th.StringType),
+        th.Property("owner_bc_id", th.StringType),
     ).to_dict()
 
     def get_url_params(
