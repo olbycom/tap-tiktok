@@ -18,7 +18,7 @@ class AdAccountsStream(TikTokStream):
     name = "ad_accounts"
     path = "/advertiser/info/"
     primary_keys = ["id"]
-    records_jsonpath = "$.data[*]"
+    records_jsonpath = "$.data.list[*]"
     replication_key = None
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
