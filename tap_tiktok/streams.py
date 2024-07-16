@@ -255,6 +255,16 @@ class AdsMetricsByDayStream(TikTokReportsStream):
             start_date = datetime.datetime.strptime(next_page_token["start_date"], DATE_FORMAT)
         else:
             start_date = self.get_starting_timestamp(context)
+
+        lookback_window = self.config["lookback"]
+        if lookback_window > 0:
+            # if lookback is configured, we want to refetch data for the entire lookback window
+            # (or as far back as the configured start date, whichever is the most recent date)
+            start_date = max(
+                min(start_date, datetime.datetime.now(tz=start_date.tzinfo) - datetime.timedelta(days=lookback_window)),
+                datetime.datetime.fromisoformat(self.config["start_date"]).replace(tzinfo=start_date.tzinfo),
+            )
+
         yesterday = datetime.datetime.now(tz=start_date.tzinfo) - datetime.timedelta(days=1)
         end_date = min(start_date + datetime.timedelta(days=STEP_NUM_DAYS), yesterday)
         params: dict = {

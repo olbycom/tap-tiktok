@@ -74,6 +74,12 @@ class TapTikTok(Tap):
             th.BooleanType,
             default=True,
             description="If true then deleted status entities will also be returned"
+        ),
+        th.Property(
+            "lookback",
+            th.IntegerType,
+            default=0,
+            description="The number of days of data to reload from the current date (ignored if current state of the extractor has a start date earlier than the current date minus number of lookback days)"
         )
     ).to_dict()
 
