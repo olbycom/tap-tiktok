@@ -17,6 +17,7 @@ pipx install git+https://github.com/gthsheep/tap-tiktok
 `access_token` - Access Token for the API as obtained via the authentication process described below.  
 `advertiser_id` - Advertiser ID for your TikTok account.  
 `start_date` - Start date as of when to start collecting metrics, e.g. `2022-01-01T00:00:00Z`  
+`lookback` - Number of days prior to the current date for which data should be refetched (default `0`)
 
 A full list of supported settings and capabilities for this
 tap is available by running:

@@ -2,6 +2,7 @@
 import copy
 import json
 import datetime
+import dateutil
 import requests
 from typing import Any, Dict, Iterable, Optional
 from urllib.parse import urlparse
@@ -255,6 +256,17 @@ class AdsMetricsByDayStream(TikTokReportsStream):
             start_date = datetime.datetime.strptime(next_page_token["start_date"], DATE_FORMAT)
         else:
             start_date = self.get_starting_timestamp(context)
+
+            # picking up where we left off on the last run (or first run), adjust for lookback if set
+            lookback_window = self.config["lookback"]
+            if lookback_window > 0:
+                # if lookback is configured, we want to refetch data for the entire lookback window
+                # (or as far back as the configured start date, whichever is the most recent date)
+                start_date = max(
+                    min(start_date, datetime.datetime.now(tz=start_date.tzinfo) - datetime.timedelta(days=lookback_window)),
+                    dateutil.parser.isoparse(self.config["start_date"]),
+                )
+
         yesterday = datetime.datetime.now(tz=start_date.tzinfo) - datetime.timedelta(days=1)
         end_date = min(start_date + datetime.timedelta(days=STEP_NUM_DAYS), yesterday)
         params: dict = {
