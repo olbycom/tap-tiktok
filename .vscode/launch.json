@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "tap-tiktok",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceRoot}/tap_tiktok/tap.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--config",
+        ".secrets/config.json",
+        "--state",
+        ".secrets/state.json"
+      ],
+      "env": { "PYTHONPATH": "${workspaceRoot}" },
+      // Change this to false if you wish to debug and add breakpoints outside of your code e.g. the singer-sdk package
+      "justMyCode": false
+    },
+    {
+      "name": "tap-tiktok full-refresh",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceRoot}/tap_tiktok/tap.py",
+      "console": "integratedTerminal",
+      "args": ["--config", ".secrets/config.json"],
+      "env": { "PYTHONPATH": "${workspaceRoot}" },
+      // Change this to false if you wish to debug and add breakpoints outside of your code e.g. the singer-sdk package
+      "justMyCode": false
+    }
+  ]
+}
