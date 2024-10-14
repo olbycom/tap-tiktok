@@ -1,9 +1,10 @@
 """REST client handling, including TikTokStream base class."""
 
 import json
-import requests
+from http import HTTPStatus
 from typing import Any, Dict, Optional
 
+import requests
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.streams import RESTStream
 
@@ -31,9 +32,7 @@ class TikTokStream(RESTStream):
         page_matches = extract_jsonpath(json_path, json)
         return next(iter(page_matches), None)
 
-    def get_next_page_token(
-        self, response: requests.Response, previous_token: Optional[Any]
-    ) -> Optional[Any]:
+    def get_next_page_token(self, response: requests.Response, previous_token: Optional[Any]) -> Optional[Any]:
         """Return a token for identifying next page or None if no more pages."""
         current_page = self._get_page_info("$.data.page_info.page", response.json()) or 0
         total_pages = self._get_page_info("$.data.page_info.total_page", response.json()) or 0
@@ -41,16 +40,29 @@ class TikTokStream(RESTStream):
             return current_page + 1
         return None
 
-    def get_url_params(
-        self, context: Optional[dict], next_page_token: Optional[Any]
-    ) -> Dict[str, Any]:
+    def get_url_params(self, context: Optional[dict], next_page_token: Optional[Any]) -> Dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         params: dict = {"advertiser_id": self.config["advertiser_id"]}
         if next_page_token:
             params["page"] = next_page_token
-        params["filtering"] = json.dumps({"primary_status": "STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"})
+        params["filtering"] = json.dumps(
+            {"primary_status": "STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"}
+        )
         params["page_size"] = 10
         return params
+
+    def validate_response(self, response: requests.Response) -> None:
+        if response.status_code == HTTPStatus.OK:
+            response_json = response.json()
+            message = response_json.get("message")
+            code = response_json.get("code")
+            data = response_json.get("data")
+            if message != "OK" or not data:
+                self.logger.warning(
+                    f"Response for {response.request.url} returned no data. API response: Code ({code}) - {message}."
+                )
+
+        return super().validate_response(response)
 
 
 class TikTokReportsStream(TikTokStream):
@@ -61,11 +73,9 @@ class TikTokReportsStream(TikTokStream):
     next_page_token_jsonpath = "$.page_info.page"
 
     def post_process(self, row: dict, context: Optional[dict] = None) -> Optional[dict]:
-        return {**row['dimensions'], **row['metrics']}
+        return {**row["dimensions"], **row["metrics"]}
 
-    def get_next_page_token(
-        self, response: requests.Response, previous_token: Optional[Any]
-    ) -> Optional[Any]:
+    def get_next_page_token(self, response: requests.Response, previous_token: Optional[Any]) -> Optional[Any]:
         """Return a token for identifying next page or None if no more pages."""
         page_matches = extract_jsonpath("$.data.page_info.page", response.json())
         page_match = next(iter(page_matches), None)

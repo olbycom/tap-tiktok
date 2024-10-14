@@ -8,11 +8,14 @@ keywords = [
     "TikTok",
 ]
 license = "Apache 2.0"
+packages = [
+    { include = "tap_tiktok" },
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
 requests = "^2.25.1"
-singer-sdk = ">0.4.0"
+singer-sdk = ">0.4.0,<=0.38.0"
 
 pendulum = "^3.0.0"
 [tool.poetry.dev-dependencies]
