@@ -5,6 +5,7 @@ from http import HTTPStatus
 from typing import Any, Dict, Optional
 
 import requests
+from singer_sdk.exceptions import FatalAPIError, RetriableAPIError
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.streams import RESTStream
 
@@ -56,11 +57,11 @@ class TikTokStream(RESTStream):
             response_json = response.json()
             message = response_json.get("message")
             code = response_json.get("code")
-            data = response_json.get("data")
-            if message != "OK" or not data:
-                self.logger.warning(
-                    f"Response for {response.request.url} returned no data. API response: Code ({code}) - {message}."
-                )
+            if message != "OK":
+                if self.name == "ad_accounts":
+                    # skip this temporarily since it might be a permission issue
+                    return super().validate_response(response)
+                raise FatalAPIError(f"Error calling {response.request.url}. API response: Code ({code}) - {message}")
 
         return super().validate_response(response)
 
