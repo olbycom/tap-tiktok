@@ -70,22 +70,37 @@ class CampaignsStream(TikTokStream):
     primary_keys = ["campaign_id"]
     replication_key = None
     schema = th.PropertiesList(
-        th.Property("campaign_id", th.StringType),
-        th.Property("campaign_name", th.StringType),
-        th.Property("campaign_type", th.StringType),
-        th.Property("objective", th.StringType),
-        th.Property("objective_type", th.StringType),
         th.Property("advertiser_id", th.StringType),
-        th.Property("budget_mode", th.StringType),
+        th.Property("campaign_id", th.StringType),
+        th.Property("campaign_system_origin", th.StringType),
+        th.Property("create_time", th.StringType),
+        th.Property("modify_time", th.StringType),
+        th.Property("objective_type", th.StringType),
+        th.Property("app_promotion_type", th.StringType),
+        th.Property("is_search_campaign", th.BooleanType),
+        th.Property("is_smart_performance_campaign", th.BooleanType),
+        th.Property("campaign_type", th.StringType),
+        th.Property("app_id", th.StringType),
+        th.Property("is_advanced_dedicated_campaign", th.BooleanType),
+        th.Property("campaign_app_profile_page_state", th.StringType),
+        th.Property("rf_campaign_type", th.StringType),
+        th.Property("campaign_product_source", th.StringType),
+        th.Property("campaign_name", th.StringType),
+        th.Property("special_industries", th.ArrayType(th.StringType)),
+        th.Property("budget_optimize_on", th.BooleanType),
+        th.Property("bid_type", th.StringType),
         th.Property("deep_bid_type", th.StringType),
-        th.Property("status", th.StringType),
-        th.Property("create_time", th.DateTimeType),
-        th.Property("modify_time", th.DateTimeType),
-        th.Property("opt_status", th.StringType),
-        th.Property("is_new_structure", th.BooleanType),
-        th.Property("split_test_variable", th.StringType),
-        th.Property("budget", th.NumberType),
         th.Property("roas_bid", th.NumberType),
+        th.Property("optimization_goal", th.StringType),
+        th.Property("budget_mode", th.StringType),
+        th.Property("budget", th.NumberType),
+        th.Property("rta_id", th.StringType),
+        th.Property("rta_product_selection_enabled", th.BooleanType),
+        th.Property("operation_status", th.StringType),
+        th.Property("secondary_status", th.StringType),
+        th.Property("postback_window_mode", th.StringType),
+        th.Property("is_new_structure", th.BooleanType),
+        th.Property("objective", th.StringType),
     ).to_dict()
 
 
@@ -94,95 +109,179 @@ class AdGroupsStream(TikTokStream):
     path = "/adgroup/get/"
     primary_keys = ["adgroup_id"]
     replication_key = None
-    schema = th.PropertiesList(
+    schema = schema = th.PropertiesList(
+        th.Property("advertiser_id", th.StringType),
+        th.Property("campaign_id", th.StringType),
+        th.Property("campaign_name", th.StringType),
+        th.Property("campaign_system_origin", th.StringType),
         th.Property("adgroup_id", th.StringType),
-        th.Property("age", th.ArrayType(th.StringType)),
-        th.Property("display_mode", th.StringType),
-        th.Property("operation_system", th.ArrayType(th.StringType)),
-        th.Property("creative_material_mode", th.StringType),
-        th.Property("excluded_audience", th.ArrayType(th.IntegerType)),
-        th.Property("optimize_goal", th.StringType),
-        th.Property("budget_mode", th.StringType),
-        th.Property("brand_safety_partner", th.StringType),
-        th.Property("enable_inventory_filter", th.BooleanType),
-        th.Property("conversion_bid", th.NumberType),
-        th.Property("interest_keywords", th.ArrayType(th.NumberType)),
-        th.Property("scheduled_budget", th.NumberType),
-        th.Property("deep_external_action", th.StringType),
-        th.Property("modify_time", th.DateTimeType),
-        th.Property("placement_type", th.StringType),
-        th.Property("is_comment_disable", th.IntegerType),
-        th.Property("audience", th.ArrayType(th.IntegerType)),
-        th.Property("schedule_end_time", th.DateTimeType),
-        th.Property("brand_safety", th.StringType),
-        th.Property("daily_retention_ratio", th.NumberType),
-        th.Property("languages", th.ArrayType(th.StringType)),
-        th.Property("rf_predict_cpr", th.NumberType),
-        th.Property("deep_bid_type", th.StringType),
-        th.Property("skip_learning_phase", th.BooleanType),
-        th.Property("rf_predict_frequency", th.NumberType),
-        th.Property("external_type", th.StringType),
-        th.Property("gender", th.StringType),
-        th.Property("category", th.IntegerType),
-        th.Property("pixel_id", th.StringType),
-        th.Property("frequency_schedule", th.IntegerType),
-        th.Property("keywords", th.ArrayType(th.NumberType)),
-        th.Property("enable_search_result", th.BooleanType),
-        th.Property("bid", th.NumberType),
+        th.Property("adgroup_name", th.StringType),
+        th.Property("create_time", th.StringType),
+        th.Property("modify_time", th.StringType),
+        th.Property("shopping_ads_type", th.StringType),
+        th.Property("identity_id", th.StringType),
+        th.Property("identity_type", th.StringType),
+        th.Property("identity_authorized_bc_id", th.StringType),
+        th.Property("product_source", th.StringType),
+        th.Property("catalog_id", th.StringType),
+        th.Property("catalog_authorized_bc_id", th.StringType),
+        th.Property("store_id", th.StringType),
+        th.Property("store_authorized_bc_id", th.StringType),
+        th.Property("promotion_type", th.StringType),
+        th.Property("promotion_target_type", th.StringType),
+        th.Property("promotion_website_type", th.StringType),
+        th.Property("app_id", th.StringType),
         th.Property("app_type", th.StringType),
         th.Property("app_download_url", th.StringType),
-        th.Property("create_time", th.DateTimeType),
-        th.Property("frequency", th.IntegerType),
-        th.Property("include_custom_actions", th.ArrayType(th.StringType)),
-        th.Property("ios14_quota_type", th.StringType),
-        th.Property("bid_type", th.StringType),
-        th.Property("app_id", th.IntegerType),
-        th.Property("split_test_adgroup_ids", th.ArrayType(th.StringType)),
-        th.Property("advertiser_id", th.StringType),
-        th.Property("buy_reach", th.IntegerType),
-        th.Property("dayparting", th.StringType),
-        th.Property("buy_impression", th.IntegerType),
-        th.Property("automated_targeting", th.StringType),
-        th.Property("pacing", th.StringType),
-        th.Property("statistic_type", th.StringType),
-        th.Property("is_hfss", th.BooleanType),
-        th.Property("conversion_id", th.IntegerType),
-        th.Property("campaign_name", th.StringType),
-        th.Property("rf_buy_type", th.StringType),
-        th.Property("device_models", th.ArrayType(th.IntegerType)),
-        th.Property("campaign_id", th.StringType),
-        th.Property("device_price", th.ArrayType(th.NumberType)),
-        th.Property("schedule_start_time", th.DateTimeType),
-        th.Property("placement", th.ArrayType(th.StringType)),
-        th.Property("opt_status", th.StringType),
-        th.Property("status", th.StringType),
-        th.Property("external_action", th.StringType),
-        th.Property("conversion_window", th.IntegerType),
-        th.Property("adgroup_name", th.StringType),
-        th.Property("billing_event", th.StringType),
-        th.Property("location", th.ArrayType(th.IntegerType)),
-        th.Property("budget", th.NumberType),
-        th.Property("video_download", th.StringType),
-        th.Property("deep_cpabid", th.NumberType),
-        th.Property("is_share_disable", th.BooleanType),
-        th.Property("feed_type", th.StringType),
-        th.Property("schedule_infos", th.StringType),
-        th.Property("exclude_custom_actions", th.ArrayType(th.StringType)),
+        th.Property("pixel_id", th.StringType),
+        th.Property("optimization_event", th.StringType),
+        th.Property("placement_type", th.StringType),
+        th.Property("placements", th.ArrayType(th.StringType)),
+        th.Property("search_result_enabled", th.BooleanType),
+        th.Property("comment_disabled", th.BooleanType),
+        th.Property("video_download_disabled", th.BooleanType),
+        th.Property("share_disabled", th.BooleanType),
+        th.Property("blocked_pangle_app_ids", th.ArrayType(th.StringType)),
+        th.Property("audience_type", th.StringType),
+        th.Property("audience_rule", th.ObjectType()),
+        th.Property("auto_targeting_enabledTo be deprecated", th.BooleanType),
+        th.Property("shopping_ads_retargeting_type", th.StringType),
+        th.Property("shopping_ads_retargeting_actions_days", th.NumberType),
         th.Property(
-            "action_v2",
+            "included_custom_actions",
             th.ArrayType(
                 th.ObjectType(
-                    th.Property("action_categories", th.ArrayType(th.IntegerType)),
-                    th.Property("action_period", th.IntegerType),
-                    th.Property("action_scene", th.StringType),
-                    th.Property("user_actions", th.ArrayType(th.StringType)),
+                    th.Property("code", th.StringType),
+                    th.Property("days", th.IntegerType),
                 )
             ),
         ),
-        th.Property("is_new_structure", th.BooleanType),
+        th.Property(
+            "excluded_custom_actions",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("code", th.StringType),
+                    th.Property("days", th.IntegerType),
+                )
+            ),
+        ),
+        th.Property("shopping_ads_retargeting_custom_audience_relation", th.StringType),
+        th.Property("location_ids", th.ArrayType(th.StringType)),
+        th.Property("zipcode_ids", th.ArrayType(th.StringType)),
+        th.Property("languages", th.ArrayType(th.StringType)),
+        th.Property("gender", th.StringType),
+        th.Property("age_groups", th.ArrayType(th.StringType)),
+        th.Property("spending_power", th.StringType),
+        th.Property("household_income", th.ArrayType(th.StringType)),
+        th.Property("audience_ids", th.ArrayType(th.StringType)),
+        th.Property("smart_audience_enabled", th.BooleanType),
+        th.Property("excluded_audience_ids", th.ArrayType(th.StringType)),
+        th.Property("interest_category_ids", th.ArrayType(th.StringType)),
+        th.Property("interest_keyword_ids", th.ArrayType(th.StringType)),
+        th.Property("purchase_intention_keyword_ids", th.ArrayType(th.StringType)),
+        th.Property(
+            "actions",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("action_scene", th.StringType),
+                    th.Property("action_period", th.NumberType),
+                    th.Property("video_user_actions", th.ArrayType(th.StringType)),
+                    th.Property("action_category_ids", th.ArrayType(th.StringType)),
+                )
+            ),
+        ),
+        th.Property("smart_interest_behavior_enabled", th.BooleanType),
+        th.Property("included_pangle_audience_package_ids", th.ArrayType(th.StringType)),
+        th.Property("excluded_pangle_audience_package_ids", th.ArrayType(th.StringType)),
+        th.Property("operating_systems", th.ArrayType(th.StringType)),
+        th.Property("min_android_version", th.StringType),
+        th.Property("ios14_targeting", th.StringType),
+        th.Property("min_ios_version", th.StringType),
+        th.Property("ios14_quota_type", th.StringType),
+        th.Property("device_model_ids", th.ArrayType(th.StringType)),
+        th.Property("network_types", th.ArrayType(th.StringType)),
+        th.Property("carrier_ids", th.ArrayType(th.StringType)),
+        th.Property("isp_ids", th.ArrayType(th.StringType)),
+        th.Property("device_price_ranges", th.ArrayType(th.NumberType)),
+        th.Property("saved_audience_id", th.StringType),
+        th.Property("contextual_tag_ids", th.ArrayType(th.StringType)),
+        th.Property("brand_safety_type", th.StringType),
+        th.Property("brand_safety_partner", th.StringType),
+        th.Property("inventory_filter_enabled", th.BooleanType),
+        th.Property("category_exclusion_ids", th.ArrayType(th.StringType)),
+        th.Property("vertical_sensitivity_id", th.StringType),
+        th.Property("budget_mode", th.StringType),
+        th.Property("budget", th.NumberType),
+        th.Property("scheduled_budget", th.NumberType),
         th.Property("schedule_type", th.StringType),
-        th.Property("interest_category_v2", th.ArrayType(th.IntegerType)),
-        th.Property("connection_type", th.ArrayType(th.StringType)),
+        th.Property("schedule_start_time", th.DateTimeType),
+        th.Property("schedule_end_time", th.DateTimeType),
+        th.Property("predict_impression", th.NumberType),
+        th.Property("topview_reach_range", th.ArrayType(th.NumberType)),
+        th.Property("pre_discount_cpm", th.NumberType),
+        th.Property("cpm", th.NumberType),
+        th.Property("discount_type", th.StringType),
+        th.Property("discount_amount", th.NumberType),
+        th.Property("discount_percentage", th.NumberType),
+        th.Property("pre_discount_budget", th.NumberType),
+        th.Property(
+            "schedule_infos",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property(
+                        "schedules",
+                        th.ArrayType(
+                            th.ObjectType(
+                                th.Property("start_time", th.StringType),
+                                th.Property("end_time", th.StringType),
+                            )
+                        ),
+                    ),
+                    th.Property("expected_orders", th.ArrayType(th.NumberType)),
+                    th.Property("is_draft", th.BooleanType),
+                    th.Property("schedule_id", th.StringType),
+                )
+            ),
+        ),
+        th.Property("delivery_mode", th.StringType),
+        th.Property("dayparting", th.StringType),
+        th.Property("optimization_goal", th.StringType),
+        th.Property("frequency", th.NumberType),
+        th.Property("frequency_schedule", th.NumberType),
+        th.Property("secondary_optimization_event", th.StringType),
+        th.Property("bid_type", th.StringType),
+        th.Property("bid_price", th.NumberType),
+        th.Property("conversion_bid_price", th.NumberType),
+        th.Property("deep_bid_type", th.StringType),
+        th.Property("roas_bid", th.NumberType),
+        th.Property("vbo_window", th.StringType),
+        th.Property("bid_display_mode", th.StringType),
+        th.Property("deep_cpa_bid", th.NumberType),
+        th.Property("cpv_video_duration", th.StringType),
+        th.Property("next_day_retention", th.NumberType),
+        th.Property("click_attribution_window", th.StringType),
+        th.Property("engaged_view_attribution_window", th.StringType),
+        th.Property("view_attribution_window", th.StringType),
+        th.Property("attribution_event_count", th.StringType),
+        th.Property("billing_event", th.StringType),
+        th.Property("pacing", th.StringType),
+        th.Property("operation_status", th.StringType),
+        th.Property("secondary_status", th.StringType),
+        th.Property("statistic_type", th.StringType),
+        th.Property("is_hfss", th.BooleanType),
+        th.Property("creative_material_mode", th.StringType),
+        th.Property("adgroup_app_profile_page_state", th.StringType),
+        th.Property("is_smart_performance_campaign", th.BooleanType),
+        th.Property("feed_type", th.StringType),
+        th.Property("rf_purchased_type", th.StringType),
+        th.Property("purchased_impression", th.NumberType),
+        th.Property("purchased_reach", th.NumberType),
+        th.Property("rf_estimated_cpr", th.NumberType),
+        th.Property("rf_estimated_frequency", th.NumberType),
+        th.Property("split_test_group_id", th.StringType),
+        th.Property("split_test_status", th.StringType),
+        th.Property("is_new_structure", th.BooleanType),
+        th.Property("skip_learning_phase", th.BooleanType),
     ).to_dict()
 
 
@@ -191,49 +290,120 @@ class AdsStream(TikTokStream):
     path = "/ad/get/"
     primary_keys = ["ad_id"]
     replication_key = None
-    schema = th.PropertiesList(
-        th.Property("ad_id", th.StringType),
-        th.Property("ad_format", th.StringType),
-        th.Property("campaign_name", th.StringType),
-        th.Property("external_action", th.StringType),
-        th.Property("identity_type", th.StringType),
-        th.Property("campaign_id", th.StringType),
-        th.Property("impression_tracking_url", th.StringType),
-        th.Property("brand_safety_postbid_partner", th.StringType),
-        th.Property("ad_name", th.StringType),
-        th.Property("avatar_icon_web_uri", th.StringType),
-        th.Property("ad_texts", th.StringType),
-        th.Property("vast_moat", th.BooleanType),
-        th.Property("is_creative_authorized", th.BooleanType),
-        th.Property("adgroup_id", th.StringType),
-        th.Property("image_ids", th.ArrayType(th.StringType)),
-        th.Property("product_ids", th.ArrayType(th.IntegerType)),
-        th.Property("call_to_action_id", th.StringType),
-        th.Property("video_id", th.StringType),
-        th.Property("adgroup_name", th.StringType),
+    schema = schema = th.PropertiesList(
         th.Property("advertiser_id", th.StringType),
-        th.Property("open_url_type", th.StringType),
-        th.Property("creative_type", th.StringType),
-        th.Property("landing_page_url", th.StringType),
-        th.Property("modify_time", th.DateTimeType),
-        th.Property("profile_image", th.StringType),
-        th.Property("call_to_action", th.StringType),
+        th.Property("campaign_id", th.StringType),
+        th.Property("campaign_name", th.StringType),
+        th.Property("campaign_system_origin", th.StringType),
+        th.Property("adgroup_id", th.StringType),
+        th.Property("adgroup_name", th.StringType),
+        th.Property("ad_id", th.StringType),
+        th.Property("ad_name", th.StringType),
+        th.Property("create_time", th.StringType),
+        th.Property("modify_time", th.StringType),
         th.Property("identity_id", th.StringType),
-        th.Property("page_id", th.NumberType),
-        th.Property("display_name", th.StringType),
-        th.Property("opt_status", th.StringType),
-        th.Property("playable_url", th.StringType),
-        th.Property("is_new_structure", th.BooleanType),
-        th.Property("click_tracking_url", th.StringType),
+        th.Property("identity_type", th.StringType),
+        th.Property("identity_authorized_bc_id", th.StringType),
+        th.Property("catalog_id", th.StringType),
+        th.Property("product_specific_type", th.StringType),
+        th.Property("item_group_ids", th.ArrayType(th.StringType)),
+        th.Property("product_set_id", th.StringType),
+        th.Property("sku_ids", th.ArrayType(th.StringType)),
+        th.Property(
+            "showcase_products",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("item_group_id", th.StringType),
+                    th.Property("store_id", th.StringType),
+                    th.Property("catalog_id", th.StringType),
+                )
+            ),
+        ),
+        th.Property("ad_format", th.StringType),
+        th.Property("vertical_video_strategy", th.StringType),
+        th.Property("dynamic_format", th.StringType),
+        th.Property("video_id", th.StringType),
+        th.Property("image_ids", th.ArrayType(th.StringType)),
+        th.Property("carousel_image_index", th.IntegerType),
+        th.Property("music_id", th.StringType),
+        th.Property("tiktok_item_id", th.StringType),
+        th.Property("promotional_music_disabled", th.BooleanType),
+        th.Property("item_duet_status", th.StringType),
+        th.Property("item_stitch_status", th.StringType),
+        th.Property("dark_post_status", th.StringType),
+        th.Property("branded_content_disabled", th.BooleanType),
+        th.Property("shopping_ads_video_package_id", th.StringType),
         th.Property("ad_text", th.StringType),
-        th.Property("landing_page_urls", th.StringType),
-        th.Property("is_aco", th.BooleanType),
-        th.Property("open_url", th.StringType),
-        th.Property("app_name", th.StringType),
-        th.Property("status", th.StringType),
-        th.Property("create_time", th.DateTimeType),
+        th.Property("ad_texts", th.StringType),
+        th.Property("call_to_action", th.StringType),
+        th.Property("call_to_action_id", th.StringType),
         th.Property("card_id", th.StringType),
+        th.Property("landing_page_url", th.StringType),
+        th.Property(
+            "utm_params",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("key", th.StringType),
+                    th.Property("value", th.StringType),
+                )
+            ),
+        ),
+        th.Property("page_id", th.NumberType),
+        th.Property("cpp_url", th.StringType),
+        th.Property("tiktok_page_category", th.StringType),
+        th.Property("phone_region_code", th.StringType),
+        th.Property("phone_region_calling_code", th.StringType),
+        th.Property("phone_number", th.StringType),
+        th.Property("deeplink", th.StringType),
+        th.Property("deeplink_type", th.StringType),
+        th.Property("deeplink_format_type", th.StringType),
+        th.Property("shopping_ads_deeplink_type", th.StringType),
+        th.Property(
+            "deeplink_utm_params",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("key", th.StringType),
+                    th.Property("value", th.StringType),
+                )
+            ),
+        ),
+        th.Property("shopping_ads_fallback_type", th.StringType),
         th.Property("fallback_type", th.StringType),
+        th.Property("dynamic_destination", th.StringType),
+        th.Property("aigc_disclosure_type", th.StringType),
+        th.Property("disclaimer_type", th.StringType),
+        th.Property("disclaimer_text", th.ObjectType(th.Property("text", th.StringType))),
+        th.Property(
+            "disclaimer_clickable_texts",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("text", th.StringType),
+                    th.Property("url", th.StringType),
+                )
+            ),
+        ),
+        th.Property("tracking_pixel_id", th.NumberType),
+        th.Property("tracking_app_id", th.StringType),
+        th.Property("tracking_offline_event_set_ids", th.ArrayType(th.StringType)),
+        th.Property("vast_moat_enabled", th.BooleanType),
+        th.Property("viewability_postbid_partner", th.StringType),
+        th.Property("viewability_vast_url", th.StringType),
+        th.Property("brand_safety_postbid_partner", th.StringType),
+        th.Property("brand_safety_vast_url", th.StringType),
+        th.Property("impression_tracking_url", th.StringType),
+        th.Property("click_tracking_url", th.StringType),
+        th.Property("playable_url", th.StringType),
+        th.Property("operation_status", th.StringType),
+        th.Property("secondary_status", th.StringType),
+        th.Property("creative_type", th.StringType),
+        th.Property("app_name", th.StringType),
+        th.Property("display_name", th.StringType),
+        th.Property("avatar_icon_web_uri", th.StringType),
+        th.Property("profile_image_url", th.StringType),
+        th.Property("creative_authorized", th.BooleanType),
+        th.Property("is_aco", th.BooleanType),
+        th.Property("is_new_structure", th.BooleanType),
+        th.Property("optimization_event", th.StringType),
     ).to_dict()
 
 
@@ -332,12 +502,12 @@ class CampaignMetricsByDayStream(AdsMetricsByDayStream):
     status_field = "campaign_status"
 
 
-ATTRIBUTE_METRICS = [
+AD_ATTRIBUTE_METRICS = [
     "campaign_name",
     "objective_type",
     "campaign_id",
     "adgroup_name",
-    "placement",
+    "placement_type",
     "adgroup_id",
     "ad_name",
     "ad_text",
@@ -351,7 +521,7 @@ ATTRIBUTE_METRICS = [
 
 class AdsAttributeMetricsStream(AdsMetricsByDayStream):
     name = "ads_attribute_metrics"
-    tiktok_metrics = ATTRIBUTE_METRICS
+    tiktok_metrics = AD_ATTRIBUTE_METRICS
     path = "/"
     primary_keys = ["ad_id"]
     replication_key = None
@@ -360,7 +530,7 @@ class AdsAttributeMetricsStream(AdsMetricsByDayStream):
     ]
     properties += [
         th.Property(metric, th.StringType if metric in ["campaign_id", "adgroup_id"] else th.StringType)
-        for metric in ATTRIBUTE_METRICS
+        for metric in AD_ATTRIBUTE_METRICS
     ]
     schema = th.PropertiesList(*properties).to_dict()
 
@@ -372,48 +542,9 @@ class AdsAttributeMetricsStream(AdsMetricsByDayStream):
             "service_type": "AUCTION",
             "report_type": "BASIC",
             "data_level": "AUCTION_AD",
-            "dimensions": json.dumps(["ad_id", "stat_time_day"]),
+            "dimensions": json.dumps(["ad_id"]),
             "metrics": json.dumps(self.tiktok_metrics),
-        }
-        if next_page_token:
-            params["page"] = next_page_token["page"]
-        return params
-
-    def get_next_page_token(self, response: requests.Response, previous_token: Optional[Any]) -> Optional[Any]:
-        """Return a token for identifying next page or None if no more pages."""
-        current_page = self._get_page_info("$.data.page_info.page", response.json()) or 0
-        total_pages = self._get_page_info("$.data.page_info.total_page", response.json()) or 0
-        if current_page < total_pages:
-            return {"page": current_page + 1}
-        return None
-
-
-class CampaignsAttributeMetricsStream(CampaignMetricsByDayStream):
-    name = "campaigns_attribute_metrics"
-    status_field = "campaign_status"
-    tiktok_metrics = ATTRIBUTE_METRICS
-    path = "/"
-    primary_keys = ["campaign_id"]
-    replication_key = None
-    properties = [
-        th.Property("campaign_id", th.IntegerType),
-    ]
-    properties += [
-        th.Property(metric, th.StringType if metric in ["campaign_id", "adgroup_id"] else th.StringType)
-        for metric in ATTRIBUTE_METRICS
-    ]
-    schema = th.PropertiesList(*properties).to_dict()
-
-    def get_url_params(self, context: Optional[dict], next_page_token: Optional[Any]) -> Dict[str, Any]:
-        """Return a dictionary of values to be used in URL parameterization."""
-        params: dict = {
-            "page_size": 10,
-            "advertiser_id": self.config.get("advertiser_id"),
-            "service_type": "AUCTION",
-            "report_type": "BASIC",
-            "data_level": "AUCTION_CAMPAIGN",
-            "dimensions": json.dumps(["campaign_id", "stat_time_day"]),
-            "metrics": json.dumps(self.tiktok_metrics),
+            "query_lifetime": True,
         }
         if next_page_token:
             params["page"] = next_page_token["page"]

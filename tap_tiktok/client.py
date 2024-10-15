@@ -14,6 +14,7 @@ DATE_FORMAT = "%Y-%m-%d"
 class TikTokStream(RESTStream):
 
     url_base = "https://business-api.tiktok.com/open_api/v1.3"
+    # url_base = "https://sandbox-ads.tiktok.com/open_api/v1.3"
 
     records_jsonpath = "$.data.list[*]"
 
