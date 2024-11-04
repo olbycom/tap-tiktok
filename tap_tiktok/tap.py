@@ -5,6 +5,7 @@ from typing import List
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
 
+import tap_tiktok.new_streams as new_streams
 from tap_tiktok.streams import (
     AdAccountsStream,
     AdGroupsStream,
@@ -25,7 +26,7 @@ from tap_tiktok.streams import (
     CampaignsVideoPlayMetricsByDayStream,
 )
 
-STREAM_TYPES = [
+OLD_STREAM_TYPES = [
     AdAccountsStream,
     CampaignsStream,
     AdGroupsStream,
@@ -45,6 +46,18 @@ STREAM_TYPES = [
     CampaignsInAppEventMetricsByDayStream,
 ]
 
+NEW_STREAM_TYPES = [
+    new_streams.CampaignAgeGenderReportStream,
+    new_streams.CampaignCountryReportStream,
+    new_streams.CampaignLanguageReportStream,
+    new_streams.CampaignPlatformReportStream,
+]
+
+STREAM_TYPES = [
+    *OLD_STREAM_TYPES,
+    *NEW_STREAM_TYPES,
+]
+
 
 class TapTikTok(Tap):
     """TikTok tap class."""
@@ -58,8 +71,17 @@ class TapTikTok(Tap):
             required=True,
             description="The token to authenticate against the API service",
         ),
-        th.Property("advertiser_id", th.StringType, required=True, description="Advertiser ID"),
-        th.Property("start_date", th.DateTimeType, description="The earliest record date to sync"),
+        th.Property(
+            "advertiser_id",
+            th.StringType,
+            required=True,
+            description="Advertiser ID",
+        ),
+        th.Property(
+            "start_date",
+            th.DateTimeType,
+            description="The earliest record date to sync",
+        ),
         th.Property(
             "include_deleted",
             th.BooleanType,
@@ -70,7 +92,11 @@ class TapTikTok(Tap):
             "lookback",
             th.IntegerType,
             default=0,
-            description="The number of days of data to reload from the current date (ignored if current state of the extractor has a start date earlier than the current date minus number of lookback days)",
+            description=(
+                "The number of days of data to reload from the current date"
+                " (ignored if current state of the extractor has a start date"
+                " earlier than the current date minus number of lookback days)"
+            ),
         ),
     ).to_dict()
 
