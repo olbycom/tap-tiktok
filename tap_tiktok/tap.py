@@ -51,10 +51,14 @@ NEW_STREAM_TYPES = [
     new_streams.CampaignCountryReportStream,
     new_streams.CampaignLanguageReportStream,
     new_streams.CampaignPlatformReportStream,
+    new_streams.AdAgeGenderReportStream,
+    new_streams.AdCountryReportStream,
+    new_streams.AdLanguageReportStream,
+    new_streams.AdPlatformReportStream,
 ]
 
 STREAM_TYPES = [
-    *OLD_STREAM_TYPES,
+    # *OLD_STREAM_TYPES,
     *NEW_STREAM_TYPES,
 ]
 
