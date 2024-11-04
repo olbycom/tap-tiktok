@@ -444,7 +444,7 @@ class AdsMetricsByDayStream(TikTokReportsStream):
             f"Preparing request for {start_date.strftime(DATE_FORMAT)} - {end_date.strftime(DATE_FORMAT)}."
         )
         params: dict = {
-            "page_size": 10,
+            "page_size": 1000,
             "advertiser_id": self.config.get("advertiser_id"),
             "service_type": "AUCTION",
             "report_type": "BASIC",
@@ -537,7 +537,7 @@ class AdsAttributeMetricsStream(AdsMetricsByDayStream):
     def get_url_params(self, context: Optional[dict], next_page_token: Optional[Any]) -> Dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         params: dict = {
-            "page_size": 10,
+            "page_size": 1000,
             "advertiser_id": self.config.get("advertiser_id"),
             "service_type": "AUCTION",
             "report_type": "BASIC",

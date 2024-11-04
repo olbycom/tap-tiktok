@@ -49,7 +49,7 @@ class TikTokStream(RESTStream):
         params["filtering"] = json.dumps(
             {"primary_status": "STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"}
         )
-        params["page_size"] = 10
+        params["page_size"] = 1000
         return params
 
     def validate_response(self, response: requests.Response) -> None:
