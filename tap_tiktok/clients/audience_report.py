@@ -36,6 +36,10 @@ class TikTokAudienceReportStream(TikTokBasicReportStream, metaclass=abc.ABCMeta)
     path = "/"
     replication_key = "stat_time_day"
 
+    @cached_property
+    def primary_keys(self) -> list[str]:
+        return self.dimensions
+
     metrics_properties = th.PropertiesList(
         th.Property("spend", th.StringType, description="Total Cost"),
         th.Property("cpc", th.StringType, description="CPC"),
@@ -61,8 +65,7 @@ class TikTokAudienceReportStream(TikTokBasicReportStream, metaclass=abc.ABCMeta)
     @cached_property
     def schema(self) -> dict:
         return th.PropertiesList(
-            th.Property("campaign_id", th.StringType),
-            th.Property("stat_time_day", th.DateTimeType),
+            th.Property("stat_time_day", th.DateTimeType, description="Group by day"),
             *self.metrics_properties,
             *self.report_specific_properties,
         ).to_dict()
