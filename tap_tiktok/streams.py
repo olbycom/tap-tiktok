@@ -11,7 +11,7 @@ import requests
 from singer_sdk import typing as th  # JSON Schema typing helpers
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 
-from tap_tiktok.client import TikTokReportsStream, TikTokStream
+from tap_tiktok.clients import TikTokBasicReportStream, TikTokStream
 
 
 class AdAccountsStream(TikTokStream):
@@ -411,9 +411,10 @@ DATE_FORMAT = "%Y-%m-%d"
 STEP_NUM_DAYS = 30
 
 
-class AdsMetricsByDayStream(TikTokReportsStream):
+class AdsMetricsByDayStream(TikTokBasicReportStream):
     tiktok_metrics = []
     data_level = "AUCTION_AD"
+    report_type = "BASIC"
     dimensions = ["ad_id", "stat_time_day"]
 
     status_field = "ad_status"
@@ -423,7 +424,7 @@ class AdsMetricsByDayStream(TikTokReportsStream):
         if isinstance(next_page_token, dict) and next_page_token["start_date"] is not None:
             start_date = datetime.datetime.strptime(next_page_token["start_date"], DATE_FORMAT)
         else:
-            start_date = self.get_starting_timestamp(context)
+            start_date = self.get_starting_timestamp(context) or pendulum.parse(self.config["start_date"])
 
             # picking up where we left off on the last run (or first run), adjust for lookback if set
             lookback_window = self.config["lookback"]
@@ -447,7 +448,7 @@ class AdsMetricsByDayStream(TikTokReportsStream):
             "page_size": 1000,
             "advertiser_id": self.config.get("advertiser_id"),
             "service_type": "AUCTION",
-            "report_type": "BASIC",
+            "report_type": self.report_type,
             "data_level": self.data_level,
             "dimensions": json.dumps(self.dimensions),
             "metrics": json.dumps(self.tiktok_metrics),
