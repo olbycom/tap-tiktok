@@ -6,24 +6,11 @@ from singer_sdk import Stream, Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
 
 import tap_tiktok.new_streams as new_streams
-from tap_tiktok.streams import (
+from tap_tiktok.streams import (  # AdsAttributeMetricsStream,; AdsAttributionMetricsByDayStream,; AdsBasicDataMetricsByDayStream,; AdsEngagementMetricsByDayStream,; AdsInAppEventMetricsByDayStream,; AdsPageEventMetricsByDayStream,; AdsVideoPlayMetricsByDayStream,; CampaignsAttributionMetricsByDayStream,; CampaignsBasicDataMetricsByDayStream,; CampaignsEngagementMetricsByDayStream,; CampaignsInAppEventMetricsByDayStream,; CampaignsPageEventMetricsByDayStream,; CampaignsVideoPlayMetricsByDayStream,
     AdAccountsStream,
     AdGroupsStream,
-    AdsAttributeMetricsStream,
-    AdsAttributionMetricsByDayStream,
-    AdsBasicDataMetricsByDayStream,
-    AdsEngagementMetricsByDayStream,
-    AdsInAppEventMetricsByDayStream,
-    AdsPageEventMetricsByDayStream,
     AdsStream,
-    AdsVideoPlayMetricsByDayStream,
-    CampaignsAttributionMetricsByDayStream,
-    CampaignsBasicDataMetricsByDayStream,
-    CampaignsEngagementMetricsByDayStream,
-    CampaignsInAppEventMetricsByDayStream,
-    CampaignsPageEventMetricsByDayStream,
     CampaignsStream,
-    CampaignsVideoPlayMetricsByDayStream,
 )
 
 OLD_STREAM_TYPES = [
@@ -31,19 +18,19 @@ OLD_STREAM_TYPES = [
     CampaignsStream,
     AdGroupsStream,
     AdsStream,
-    AdsAttributeMetricsStream,
-    AdsBasicDataMetricsByDayStream,
-    AdsVideoPlayMetricsByDayStream,
-    AdsEngagementMetricsByDayStream,
-    AdsAttributionMetricsByDayStream,
-    AdsPageEventMetricsByDayStream,
-    AdsInAppEventMetricsByDayStream,
-    CampaignsBasicDataMetricsByDayStream,
-    CampaignsVideoPlayMetricsByDayStream,
-    CampaignsEngagementMetricsByDayStream,
-    CampaignsAttributionMetricsByDayStream,
-    CampaignsPageEventMetricsByDayStream,
-    CampaignsInAppEventMetricsByDayStream,
+    # AdsAttributeMetricsStream,
+    # AdsBasicDataMetricsByDayStream,
+    # AdsVideoPlayMetricsByDayStream,
+    # AdsEngagementMetricsByDayStream,
+    # AdsAttributionMetricsByDayStream,
+    # AdsPageEventMetricsByDayStream,
+    # AdsInAppEventMetricsByDayStream,
+    # CampaignsBasicDataMetricsByDayStream,
+    # CampaignsVideoPlayMetricsByDayStream,
+    # CampaignsEngagementMetricsByDayStream,
+    # CampaignsAttributionMetricsByDayStream,
+    # CampaignsPageEventMetricsByDayStream,
+    # CampaignsInAppEventMetricsByDayStream,
 ]
 
 NEW_STREAM_TYPES = [
