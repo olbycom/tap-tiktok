@@ -4,4 +4,9 @@ from .ad_audience_reports import (
     AdLanguageReportStream,
     AdPlatformReportStream,
 )
-from .ad_basic_reports import AdDailyReportStream, AdReservationDailyReportStream
+from .ad_basic_reports import (
+    AdDailyReportStream,
+    AdHourlyReportStream,
+    AdReservationDailyReportStream,
+    AdReservationHourlyReportStream,
+)

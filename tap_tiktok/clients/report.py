@@ -9,7 +9,11 @@ from singer_sdk import metrics
 from singer_sdk import typing as th
 from singer_sdk.streams.core import Context
 
-from tap_tiktok.pagination import DailyReportPaginator
+from tap_tiktok.pagination import (
+    BaseAPIPaginator,
+    DailyReportPaginator,
+    HourlyReportPaginator,
+)
 
 from .base import TikTokStream
 
@@ -44,6 +48,11 @@ class TikTokReportStream(TikTokStream, metaclass=abc.ABCMeta):
     def report_type(self) -> str:
         """Report type"""
 
+    @property
+    @abc.abstractmethod
+    def pagination_class(self) -> BaseAPIPaginator:
+        """Pagination class that will be used to query the API"""
+
     @cached_property
     def primary_keys(self) -> list[str]:
         return self.dimensions
@@ -71,7 +80,7 @@ class TikTokReportStream(TikTokStream, metaclass=abc.ABCMeta):
 
     def get_new_paginator(self):
         start_date = self._get_start_datetime(context=None)
-        return DailyReportPaginator(start_date)
+        return self.pagination_class(start_date)
 
     def get_url_params(self, context: dict | None, next_page_token: Any | None) -> dict[str, Any]:
         params: dict = {

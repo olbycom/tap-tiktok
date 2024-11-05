@@ -11,7 +11,7 @@ import requests
 from singer_sdk import typing as th  # JSON Schema typing helpers
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 
-from tap_tiktok.clients import TikTokBasicReportStream, TikTokStream
+from tap_tiktok.clients import TikTokDailyBasicReportStream, TikTokStream
 
 
 class AdAccountsStream(TikTokStream):
@@ -411,7 +411,7 @@ DATE_FORMAT = "%Y-%m-%d"
 STEP_NUM_DAYS = 30
 
 
-class AdsMetricsByDayStream(TikTokBasicReportStream):
+class AdsMetricsByDayStream(TikTokDailyBasicReportStream):
     tiktok_metrics = []
     data_level = "AUCTION_AD"
     report_type = "BASIC"

@@ -47,20 +47,26 @@ OLD_STREAM_TYPES = [
 ]
 
 NEW_STREAM_TYPES = [
-    new_streams.CampaignAgeGenderReportStream,
-    new_streams.CampaignCountryReportStream,
-    new_streams.CampaignLanguageReportStream,
-    new_streams.CampaignPlatformReportStream,
     new_streams.AdAgeGenderReportStream,
     new_streams.AdCountryReportStream,
+    new_streams.AdDailyReportStream,
+    new_streams.AdgroupDailyReportStream,
+    new_streams.AdgroupHourlyReportStream,
+    new_streams.AdgroupReservationDailyReportStream,
+    new_streams.AdgroupReservationHourlyReportStream,
+    new_streams.AdgroupReservationHourlyReportStream,
+    new_streams.AdHourlyReportStream,
     new_streams.AdLanguageReportStream,
     new_streams.AdPlatformReportStream,
-    new_streams.CampaignDailyReportStream,
-    new_streams.CampaignReservationDailyReportStream,
-    new_streams.AdgroupDailyReportStream,
-    new_streams.AdgroupReservationDailyReportStream,
-    new_streams.AdDailyReportStream,
     new_streams.AdReservationDailyReportStream,
+    new_streams.CampaignAgeGenderReportStream,
+    new_streams.CampaignCountryReportStream,
+    new_streams.CampaignDailyReportStream,
+    new_streams.CampaignHourlyReportStream,
+    new_streams.CampaignLanguageReportStream,
+    new_streams.CampaignPlatformReportStream,
+    new_streams.CampaignReservationDailyReportStream,
+    new_streams.CampaignReservationHourlyReportStream,
 ]
 
 STREAM_TYPES = [

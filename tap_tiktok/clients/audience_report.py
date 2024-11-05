@@ -3,6 +3,8 @@ from functools import cached_property
 
 from singer_sdk import typing as th
 
+from tap_tiktok.pagination import DailyReportPaginator
+
 from .report import TikTokReportStream
 
 
@@ -10,6 +12,7 @@ class TikTokAudienceReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
 
     report_type = "AUDIENCE"
     replication_key = "stat_time_day"
+    pagination_class = DailyReportPaginator
 
     metrics_properties = th.PropertiesList(
         th.Property("spend", th.StringType, description="Total Cost"),

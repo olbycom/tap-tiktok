@@ -4,7 +4,9 @@ from .campaign_audience_reports import (
     CampaignLanguageReportStream,
     CampaignPlatformReportStream,
 )
-from .campaign_basic_reports import (  # CampaignHourlyReportStream,
+from .campaign_basic_reports import (
     CampaignDailyReportStream,
+    CampaignHourlyReportStream,
     CampaignReservationDailyReportStream,
+    CampaignReservationHourlyReportStream,
 )
