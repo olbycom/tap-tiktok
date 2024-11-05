@@ -1,6 +1,6 @@
 from singer_sdk import typing as th
 
-from tap_tiktok.clients.audience_report import TikTokAudienceReportStream
+from tap_tiktok.clients import TikTokAudienceReportStream
 
 
 class CampaignAudienceReportStream(TikTokAudienceReportStream):

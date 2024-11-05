@@ -55,6 +55,9 @@ NEW_STREAM_TYPES = [
     new_streams.AdCountryReportStream,
     new_streams.AdLanguageReportStream,
     new_streams.AdPlatformReportStream,
+    new_streams.CampaignDailyReportStream,
+    new_streams.AdgroupDailyReportStream,
+    new_streams.AdDailyReportStream,
 ]
 
 STREAM_TYPES = [
