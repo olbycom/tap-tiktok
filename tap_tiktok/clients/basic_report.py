@@ -9,35 +9,58 @@ from .report import TikTokReportStream
 class TikTokBasicReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
 
     report_type = "BASIC"
-    path = "/"
-
-    @cached_property
-    def primary_keys(self) -> list[str]:
-        return self.dimensions
 
     metrics_properties = th.PropertiesList(
-        th.Property("spend", th.StringType, description="Sum of your total ad spend."),
+        th.Property(
+            "spend",
+            th.StringType,
+            description="Sum of your total ad spend.",
+        ),
         th.Property(
             "billed_cost",
             th.StringType,
             description="Sum of your total ad spend, excluding ad credit or coupons used. This metric might delay up to 11 hours, with records only available from September 1, 2023.",
         ),
-        th.Property("cpc", th.StringType, description="Average cost of each click to a specified destination."),
-        th.Property("cpm", th.StringType, description="Average amount you spent per 1,000 impressions."),
-        th.Property("impressions", th.StringType, description="Number of times your ads were shown."),
+        th.Property(
+            "cpc",
+            th.StringType,
+            description="Average cost of each click to a specified destination.",
+        ),
+        th.Property(
+            "cpm",
+            th.StringType,
+            description="Average amount you spent per 1,000 impressions.",
+        ),
+        th.Property(
+            "impressions",
+            th.StringType,
+            description="Number of times your ads were shown.",
+        ),
         th.Property(
             "gross_impressions",
             th.StringType,
             description="Number of times your ads were shown, including invalid impressions.",
         ),
-        th.Property("clicks", th.StringType, description="Number of clicks from your ads to a specified destination."),
+        th.Property(
+            "clicks",
+            th.StringType,
+            description="Number of clicks from your ads to a specified destination.",
+        ),
         th.Property(
             "ctr",
             th.StringType,
             description="Percentage of impressions that resulted in a destination click out of all impressions.",
         ),
-        th.Property("reach", th.StringType, description="Number of unique users who saw your ads at least once."),
-        th.Property("cost_per_1000_reached", th.StringType, description="Average cost to reach 1,000 unique users."),
+        th.Property(
+            "reach",
+            th.StringType,
+            description="Number of unique users who saw your ads at least once.",
+        ),
+        th.Property(
+            "cost_per_1000_reached",
+            th.StringType,
+            description="Average cost to reach 1,000 unique users.",
+        ),
         th.Property(
             "frequency",
             th.StringType,
@@ -48,7 +71,11 @@ class TikTokBasicReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
             th.StringType,
             description="Number of times your ad resulted in the optimization event you selected.",
         ),
-        th.Property("cost_per_conversion", th.StringType, description="Average amount spent on a conversion."),
+        th.Property(
+            "cost_per_conversion",
+            th.StringType,
+            description="Average amount spent on a conversion.",
+        ),
         th.Property(
             "conversion_rate_v2",
             th.StringType,
@@ -72,7 +99,11 @@ class TikTokBasicReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
             th.StringType,
             description="Number of times your ad resulted in an intended outcome based on your campaign objective and optimization goal.",
         ),
-        th.Property("cost_per_result", th.StringType, description="Average cost per each result from your ads."),
+        th.Property(
+            "cost_per_result",
+            th.StringType,
+            description="Average cost per each result from your ads.",
+        ),
         th.Property(
             "result_rate",
             th.StringType,
@@ -84,7 +115,9 @@ class TikTokBasicReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
             description="Number of times your ad resulted in an intended outcome based on your campaign objective and optimization goal.",
         ),
         th.Property(
-            "real_time_cost_per_result", th.StringType, description="Average cost per each result from your ads."
+            "real_time_cost_per_result",
+            th.StringType,
+            description="Average cost per each result from your ads.",
         ),
         th.Property(
             "real_time_result_rate",
@@ -166,7 +199,11 @@ class TikTokBasicReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
             th.StringType,
             description="Number of times your ad resulted in an intended outcome based on your campaign objective and optimization goal.",
         ),
-        th.Property("skan_cost_per_result", th.StringType, description="Average cost per each result from your ads."),
+        th.Property(
+            "skan_cost_per_result",
+            th.StringType,
+            description="Average cost per each result from your ads.",
+        ),
         th.Property(
             "skan_result_rate",
             th.StringType,
@@ -177,7 +214,11 @@ class TikTokBasicReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
             th.StringType,
             description="Number of times your ad resulted in an intended outcome based on your optimization event.",
         ),
-        th.Property("skan_cost_per_conversion", th.StringType, description="Average amount you spent on a conversion."),
+        th.Property(
+            "skan_cost_per_conversion",
+            th.StringType,
+            description="Average amount you spent on a conversion.",
+        ),
         th.Property(
             "skan_conversion_rate",
             th.StringType,
@@ -201,7 +242,3 @@ class TikTokBasicReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
             *self.metrics_properties,
             *self.report_specific_properties,
         ).to_dict()
-
-    @cached_property
-    def metrics_keys(self) -> list[str]:
-        return list(self.metrics_properties.to_dict()["properties"].keys())

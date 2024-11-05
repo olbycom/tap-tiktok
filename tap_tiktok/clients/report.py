@@ -2,6 +2,7 @@ import abc
 import datetime
 import json
 import typing as t
+from functools import cached_property
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
@@ -43,7 +44,22 @@ class TikTokReportStream(TikTokStream, metaclass=abc.ABCMeta):
     def buying_types(self) -> list[str]:
         """The buying type. Values: AUCTION, RESERVATION_TOP_VIEW, RESERVATION_RF"""
 
+    @property
+    @abc.abstractmethod
+    def report_type(self) -> str:
+        """Report type"""
+
+    @cached_property
+    def primary_keys(self) -> list[str]:
+        return self.dimensions
+
+    @cached_property
+    def metrics_keys(self) -> list[str]:
+        return list(self.metrics_properties.to_dict()["properties"].keys())
+
     url_base = "https://business-api.tiktok.com/open_api/v1.3/report/integrated/get/"
+
+    path = "/"
 
     records_jsonpath = "$.data.list[*]"
     next_page_token_jsonpath = "$.page_info.page"

@@ -9,12 +9,7 @@ from .report import TikTokReportStream
 class TikTokAudienceReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
 
     report_type = "AUDIENCE"
-    path = "/"
     replication_key = "stat_time_day"
-
-    @cached_property
-    def primary_keys(self) -> list[str]:
-        return self.dimensions
 
     metrics_properties = th.PropertiesList(
         th.Property("spend", th.StringType, description="Total Cost"),
@@ -45,7 +40,3 @@ class TikTokAudienceReportStream(TikTokReportStream, metaclass=abc.ABCMeta):
             *self.metrics_properties,
             *self.report_specific_properties,
         ).to_dict()
-
-    @cached_property
-    def metrics_keys(self) -> list[str]:
-        return list(self.metrics_properties.to_dict()["properties"].keys())
