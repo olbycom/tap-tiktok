@@ -6,18 +6,18 @@ from tap_tiktok.clients import (
 )
 
 
-class CampaignDailyBasicReportStream(TikTokDailyBasicReportStream):
+class CampaignsDailyBasicReportStream(TikTokDailyBasicReportStream):
     data_level = "AUCTION_CAMPAIGN"
     status_field = "campaign_status"
 
 
-class CampaignHourlyBasicReportStream(TikTokHourlyBasicReportStream):
+class CampaignsHourlyBasicReportStream(TikTokHourlyBasicReportStream):
     data_level = "AUCTION_CAMPAIGN"
     status_field = "campaign_status"
 
 
-class CampaignDailyReportStream(CampaignDailyBasicReportStream):
-    name = "campaign_daily_report"
+class CampaignsDailyReportStream(CampaignsDailyBasicReportStream):
+    name = "campaigns_daily_report"
     dimensions = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
     buying_types = ["AUCTION"]
@@ -27,8 +27,8 @@ class CampaignDailyReportStream(CampaignDailyBasicReportStream):
     )
 
 
-class CampaignReservationDailyReportStream(CampaignDailyBasicReportStream):
-    name = "campaign_reservation_daily_report"
+class CampaignsReservationDailyReportStream(CampaignsDailyBasicReportStream):
+    name = "campaigns_reservation_daily_report"
     dimensions = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
     buying_types = ["RESERVATION_TOP_VIEW", "RESERVATION_RF"]
@@ -38,8 +38,8 @@ class CampaignReservationDailyReportStream(CampaignDailyBasicReportStream):
     )
 
 
-class CampaignHourlyReportStream(CampaignHourlyBasicReportStream):
-    name = "campaign_hourly_report"
+class CampaignsHourlyReportStream(CampaignsHourlyBasicReportStream):
+    name = "campaigns_hourly_report"
     dimensions = ["campaign_id", "stat_time_hour"]
     replication_key = "stat_time_hour"
     buying_types = ["AUCTION"]
@@ -49,8 +49,8 @@ class CampaignHourlyReportStream(CampaignHourlyBasicReportStream):
     )
 
 
-class CampaignReservationHourlyReportStream(CampaignHourlyBasicReportStream):
-    name = "campaign_reservation_hourly_report"
+class CampaignsReservationHourlyReportStream(CampaignsHourlyBasicReportStream):
+    name = "campaigns_reservation_hourly_report"
     dimensions = ["campaign_id", "stat_time_hour"]
     replication_key = "stat_time_hour"
     buying_types = ["RESERVATION_TOP_VIEW", "RESERVATION_RF"]

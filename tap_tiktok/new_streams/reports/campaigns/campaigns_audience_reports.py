@@ -3,14 +3,14 @@ from singer_sdk import typing as th
 from tap_tiktok.clients import TikTokAudienceReportStream
 
 
-class CampaignAudienceReportStream(TikTokAudienceReportStream):
+class CampaignsAudienceReportStream(TikTokAudienceReportStream):
     data_level = "AUCTION_CAMPAIGN"
     status_field = "campaign_status"
     buying_types = ["AUCTION", "RESERVATION_TOP_VIEW", "RESERVATION_RF"]
 
 
-class CampaignAgeGenderReportStream(CampaignAudienceReportStream):
-    name = "campaign_age_gender_report"
+class CampaignsAgeGenderReportStream(CampaignsAudienceReportStream):
+    name = "campaigns_age_gender_report"
     dimensions = ["campaign_id", "age", "gender", "stat_time_day"]
     report_specific_properties = th.PropertiesList(
         th.Property("campaign_id", th.StringType, description="Group by campaign id"),
@@ -19,8 +19,8 @@ class CampaignAgeGenderReportStream(CampaignAudienceReportStream):
     )
 
 
-class CampaignCountryReportStream(CampaignAudienceReportStream):
-    name = "campaign_country_report"
+class CampaignsCountryReportStream(CampaignsAudienceReportStream):
+    name = "campaigns_country_report"
     dimensions = ["campaign_id", "country_code", "stat_time_day"]
     report_specific_properties = th.PropertiesList(
         th.Property("campaign_id", th.StringType, description="Group by campaign id"),
@@ -28,8 +28,8 @@ class CampaignCountryReportStream(CampaignAudienceReportStream):
     )
 
 
-class CampaignLanguageReportStream(CampaignAudienceReportStream):
-    name = "campaign_language_report"
+class CampaignsLanguageReportStream(CampaignsAudienceReportStream):
+    name = "campaigns_language_report"
     dimensions = ["campaign_id", "language", "stat_time_day"]
     report_specific_properties = th.PropertiesList(
         th.Property("campaign_id", th.StringType, description="Group by campaign id"),
@@ -37,8 +37,8 @@ class CampaignLanguageReportStream(CampaignAudienceReportStream):
     )
 
 
-class CampaignPlatformReportStream(CampaignAudienceReportStream):
-    name = "campaign_platform_report"
+class CampaignsPlatformReportStream(CampaignsAudienceReportStream):
+    name = "campaigns_platform_report"
     dimensions = ["campaign_id", "platform", "stat_time_day"]
     report_specific_properties = th.PropertiesList(
         th.Property("campaign_id", th.StringType, description="Group by campaign id"),
