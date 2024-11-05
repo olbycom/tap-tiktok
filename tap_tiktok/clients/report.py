@@ -1,15 +1,21 @@
 import abc
 import datetime
 import json
+import typing as t
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 import pendulum
 import requests
+from singer_sdk import metrics
 from singer_sdk import typing as th
 from singer_sdk.helpers.jsonpath import extract_jsonpath
+from singer_sdk.streams.core import Context
 
 from .base import TikTokStream
+
+# if t.TYPE_CHECKING:
+
 
 DATE_FORMAT = "%Y-%m-%d"
 STEP_NUM_DAYS = 30
@@ -31,6 +37,11 @@ class TikTokReportStream(TikTokStream, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def dimensions(self) -> str:
         """Dimensions of the report"""
+
+    @property
+    @abc.abstractmethod
+    def buying_types(self) -> list[str]:
+        """The buying type. Values: AUCTION, RESERVATION_TOP_VIEW, RESERVATION_RF"""
 
     url_base = "https://business-api.tiktok.com/open_api/v1.3/report/integrated/get/"
 
@@ -110,7 +121,12 @@ class TikTokReportStream(TikTokStream, metaclass=abc.ABCMeta):
                         "filter_value": json.dumps(
                             ["STATUS_ALL" if self.config.get("include_deleted") else "STATUS_NOT_DELETE"]
                         ),
-                    }
+                    },
+                    {
+                        "field_name": "buying_type",
+                        "filter_type": "IN",
+                        "filter_value": json.dumps(self.buying_types),
+                    },
                 ]
             ),
         }
@@ -118,3 +134,45 @@ class TikTokReportStream(TikTokStream, metaclass=abc.ABCMeta):
             params["page"] = next_page_token["page"]
 
         return params
+
+    def request_records(self, context: Context | None) -> t.Iterable[dict]:
+        """Request records from REST endpoint(s), returning response records.
+
+        If pagination is detected, pages will be recursed automatically.
+
+        Args:
+            context: Stream partition or context dictionary.
+
+        Yields:
+            An item for every record in the response.
+        """
+        paginator = self.get_new_paginator()
+        decorated_request = self.request_decorator(self._request)
+        pages = 0
+
+        with metrics.http_request_counter(self.name, self.path) as request_counter:
+            request_counter.context = context
+
+            while not paginator.finished:
+                prepared_request = self.prepare_request(
+                    context,
+                    next_page_token=paginator.current_value,
+                )
+                resp = decorated_request(prepared_request, context)
+                request_counter.increment()
+                self.update_sync_costs(prepared_request, resp, context)
+                records = iter(self.parse_response(resp))
+                # try:
+                #     first_record = next(records)
+                # except StopIteration:
+                #     self.logger.info(
+                #         "Pagination stopped after %d pages because no records were "
+                #         "found in the last response",
+                #         pages,
+                #     )
+                #     break
+                # yield first_record
+                yield from records
+                pages += 1
+
+                paginator.advance(resp)

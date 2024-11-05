@@ -6,6 +6,7 @@ from tap_tiktok.clients import TikTokAudienceReportStream
 class AdAudienceReportStream(TikTokAudienceReportStream):
     data_level = "AUCTION_AD"
     status_field = "ad_status"
+    buying_types = ["AUCTION", "RESERVATION_TOP_VIEW", "RESERVATION_RF"]
 
 
 class AdAgeGenderReportStream(AdAudienceReportStream):

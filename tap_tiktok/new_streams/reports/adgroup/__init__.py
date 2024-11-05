@@ -1,1 +1,4 @@
-from .adgroup_basic_reports import AdgroupDailyReportStream
+from .adgroup_basic_reports import (
+    AdgroupDailyReportStream,
+    AdgroupReservationDailyReportStream,
+)

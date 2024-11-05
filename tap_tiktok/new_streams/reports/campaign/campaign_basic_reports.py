@@ -12,16 +12,18 @@ class CampaignDailyReportStream(CampaignBasicReportStream):
     name = "campaign_daily_report"
     dimensions = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
+    buying_types = ["AUCTION"]
     report_specific_properties = th.PropertiesList(
         th.Property("campaign_id", th.StringType, description="Group by campaign id"),
         th.Property("stat_time_day", th.DateTimeType, description="Group by day"),
     )
 
 
-class CampaignDailyReportStream(CampaignBasicReportStream):
-    name = "campaign_daily_report"
+class CampaignReservationDailyReportStream(CampaignBasicReportStream):
+    name = "campaign_reservation_daily_report"
     dimensions = ["campaign_id", "stat_time_day"]
     replication_key = "stat_time_day"
+    buying_types = ["RESERVATION_TOP_VIEW", "RESERVATION_RF"]
     report_specific_properties = th.PropertiesList(
         th.Property("campaign_id", th.StringType, description="Group by campaign id"),
         th.Property("stat_time_day", th.DateTimeType, description="Group by day"),
