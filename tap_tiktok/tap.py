@@ -47,11 +47,11 @@ OLD_STREAM_TYPES = [
 ]
 
 NEW_STREAM_TYPES = [
-    new_streams.AdgroupDailyReportStream,
-    new_streams.AdgroupHourlyReportStream,
-    new_streams.AdgroupReservationDailyReportStream,
-    new_streams.AdgroupReservationHourlyReportStream,
-    new_streams.AdgroupReservationHourlyReportStream,
+    new_streams.AdGroupsDailyReportStream,
+    new_streams.AdGroupsHourlyReportStream,
+    new_streams.AdGroupsReservationDailyReportStream,
+    new_streams.AdGroupsReservationHourlyReportStream,
+    new_streams.AdGroupsReservationHourlyReportStream,
     new_streams.AdsAgeGenderReportStream,
     new_streams.AdsCountryReportStream,
     new_streams.AdsDailyReportStream,

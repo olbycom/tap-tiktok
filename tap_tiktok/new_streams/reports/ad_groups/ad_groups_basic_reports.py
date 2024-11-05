@@ -6,18 +6,18 @@ from tap_tiktok.clients import (
 )
 
 
-class AdgroupDailyBasicReportStream(TikTokDailyBasicReportStream):
+class AdGroupsDailyBasicReportStream(TikTokDailyBasicReportStream):
     data_level = "AUCTION_ADGROUP"
     status_field = "adgroup_status"
 
 
-class AdgroupHourlyBasicReportStream(TikTokHourlyBasicReportStream):
+class AdGroupsHourlyBasicReportStream(TikTokHourlyBasicReportStream):
     data_level = "AUCTION_ADGROUP"
     status_field = "adgroup_status"
 
 
-class AdgroupDailyReportStream(AdgroupDailyBasicReportStream):
-    name = "adgroup_daily_report"
+class AdGroupsDailyReportStream(AdGroupsDailyBasicReportStream):
+    name = "ad_groups_daily_report"
     dimensions = ["adgroup_id", "stat_time_day"]
     replication_key = "stat_time_day"
     buying_types = ["AUCTION"]
@@ -27,8 +27,8 @@ class AdgroupDailyReportStream(AdgroupDailyBasicReportStream):
     )
 
 
-class AdgroupReservationDailyReportStream(AdgroupDailyBasicReportStream):
-    name = "adgroup_reservation_daily_report"
+class AdGroupsReservationDailyReportStream(AdGroupsDailyBasicReportStream):
+    name = "ad_groups_reservation_daily_report"
     dimensions = ["adgroup_id", "stat_time_day"]
     replication_key = "stat_time_day"
     buying_types = ["RESERVATION_TOP_VIEW", "RESERVATION_RF"]
@@ -38,8 +38,8 @@ class AdgroupReservationDailyReportStream(AdgroupDailyBasicReportStream):
     )
 
 
-class AdgroupHourlyReportStream(AdgroupHourlyBasicReportStream):
-    name = "adgroup_hourly_report"
+class AdGroupsHourlyReportStream(AdGroupsHourlyBasicReportStream):
+    name = "ad_groups_hourly_report"
     dimensions = ["adgroup_id", "stat_time_hour"]
     replication_key = "stat_time_hour"
     buying_types = ["AUCTION"]
@@ -49,8 +49,8 @@ class AdgroupHourlyReportStream(AdgroupHourlyBasicReportStream):
     )
 
 
-class AdgroupReservationHourlyReportStream(AdgroupHourlyBasicReportStream):
-    name = "adgroup_reservation_hourly_report"
+class AdGroupsReservationHourlyReportStream(AdGroupsHourlyBasicReportStream):
+    name = "ad_groups_reservation_hourly_report"
     dimensions = ["adgroup_id", "stat_time_hour"]
     replication_key = "stat_time_hour"
     buying_types = ["RESERVATION_TOP_VIEW", "RESERVATION_RF"]
