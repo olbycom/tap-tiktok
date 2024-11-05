@@ -1,5 +1,3 @@
-from urllib.parse import parse_qs, urlparse
-
 import pendulum
 from requests import Response
 from singer_sdk.pagination import BaseAPIPaginator
