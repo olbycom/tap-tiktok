@@ -3,14 +3,14 @@ from singer_sdk import typing as th
 from tap_tiktok.clients import TikTokAudienceReportStream
 
 
-class AdAudienceReportStream(TikTokAudienceReportStream):
+class AdsAudienceReportStream(TikTokAudienceReportStream):
     data_level = "AUCTION_AD"
     status_field = "ad_status"
     buying_types = ["AUCTION", "RESERVATION_TOP_VIEW", "RESERVATION_RF"]
 
 
-class AdAgeGenderReportStream(AdAudienceReportStream):
-    name = "ad_age_gender_report"
+class AdsAgeGenderReportStream(AdsAudienceReportStream):
+    name = "ads_age_gender_report"
     dimensions = ["ad_id", "age", "gender", "stat_time_day"]
     report_specific_properties = th.PropertiesList(
         th.Property("ad_id", th.StringType, description="Group by ad id"),
@@ -19,8 +19,8 @@ class AdAgeGenderReportStream(AdAudienceReportStream):
     )
 
 
-class AdCountryReportStream(AdAudienceReportStream):
-    name = "ad_country_report"
+class AdsCountryReportStream(AdsAudienceReportStream):
+    name = "ads_country_report"
     dimensions = ["ad_id", "country_code", "stat_time_day"]
     report_specific_properties = th.PropertiesList(
         th.Property("ad_id", th.StringType, description="Group by ad id"),
@@ -28,8 +28,8 @@ class AdCountryReportStream(AdAudienceReportStream):
     )
 
 
-class AdLanguageReportStream(AdAudienceReportStream):
-    name = "ad_language_report"
+class AdsLanguageReportStream(AdsAudienceReportStream):
+    name = "ads_language_report"
     dimensions = ["ad_id", "language", "stat_time_day"]
     report_specific_properties = th.PropertiesList(
         th.Property("ad_id", th.StringType, description="Group by ad id"),
@@ -37,8 +37,8 @@ class AdLanguageReportStream(AdAudienceReportStream):
     )
 
 
-class AdPlatformReportStream(AdAudienceReportStream):
-    name = "ad_platform_report"
+class AdsPlatformReportStream(AdsAudienceReportStream):
+    name = "ads_platform_report"
     dimensions = ["ad_id", "platform", "stat_time_day"]
     report_specific_properties = th.PropertiesList(
         th.Property("ad_id", th.StringType, description="Group by ad id"),

@@ -6,18 +6,18 @@ from tap_tiktok.clients import (
 )
 
 
-class AdDailyBasicReportStream(TikTokDailyBasicReportStream):
+class AdsDailyBasicReportStream(TikTokDailyBasicReportStream):
     data_level = "AUCTION_AD"
     status_field = "ad_status"
 
 
-class AdHourlyBasicReportStream(TikTokHourlyBasicReportStream):
+class AdsHourlyBasicReportStream(TikTokHourlyBasicReportStream):
     data_level = "AUCTION_AD"
     status_field = "ad_status"
 
 
-class AdDailyReportStream(AdDailyBasicReportStream):
-    name = "ad_daily_report"
+class AdsDailyReportStream(AdsDailyBasicReportStream):
+    name = "ads_daily_report"
     dimensions = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
     buying_types = ["AUCTION"]
@@ -27,8 +27,8 @@ class AdDailyReportStream(AdDailyBasicReportStream):
     )
 
 
-class AdReservationDailyReportStream(AdDailyBasicReportStream):
-    name = "ad_reservation_daily_report"
+class AdsReservationDailyReportStream(AdsDailyBasicReportStream):
+    name = "ads_reservation_daily_report"
     dimensions = ["ad_id", "stat_time_day"]
     replication_key = "stat_time_day"
     buying_types = ["RESERVATION_TOP_VIEW", "RESERVATION_RF"]
@@ -38,8 +38,8 @@ class AdReservationDailyReportStream(AdDailyBasicReportStream):
     )
 
 
-class AdHourlyReportStream(AdHourlyBasicReportStream):
-    name = "ad_hourly_report"
+class AdsHourlyReportStream(AdsHourlyBasicReportStream):
+    name = "ads_hourly_report"
     dimensions = ["ad_id", "stat_time_hour"]
     replication_key = "stat_time_hour"
     buying_types = ["AUCTION"]
@@ -49,8 +49,8 @@ class AdHourlyReportStream(AdHourlyBasicReportStream):
     )
 
 
-class AdReservationHourlyReportStream(AdHourlyBasicReportStream):
-    name = "ad_reservation_hourly_report"
+class AdsReservationHourlyReportStream(AdsHourlyBasicReportStream):
+    name = "ads_reservation_hourly_report"
     dimensions = ["ad_id", "stat_time_hour"]
     replication_key = "stat_time_hour"
     buying_types = ["RESERVATION_TOP_VIEW", "RESERVATION_RF"]
