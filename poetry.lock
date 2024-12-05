@@ -433,6 +433,20 @@ test = ["certifi", "cryptography-vectors (==43.0.1)", "pretend", "pytest (>=6.2.
 test-randomorder = ["pytest-randomly"]
 
 [[package]]
+name = "custom-logger"
+version = "0.0.1"
+description = "Utility class for custom logger"
+optional = false
+python-versions = "*"
+files = [
+    {file = "custom_logger-0.0.1-py3-none-any.whl", hash = "sha256:b562c0651039dab0bbf30bf944919afe7323fee146a5f81de9589fd873054fa5"},
+]
+
+[package.source]
+type = "file"
+url = "helpers/custom-logger/dist/custom_logger-0.0.1-py3-none-any.whl"
+
+[[package]]
 name = "distlib"
 version = "0.3.9"
 description = "Distribution utilities"
@@ -1760,4 +1774,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "40c4e21672ccd20f55268fb8d2af49239207c18a719b7d5e5004aef764b78718"
+content-hash = "4d2c7ada514072c71053cced2ed574726b04a2a4aeef83d716cf22cb26089466"

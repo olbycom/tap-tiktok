@@ -18,6 +18,7 @@ requests = "^2.25.1"
 singer-sdk = ">0.4.0,<=0.38.0"
 
 pendulum = "^3.0.0"
+custom-logger = {path = "helpers/custom-logger/dist/custom_logger-0.0.1-py3-none-any.whl"}
 [tool.poetry.dev-dependencies]
 pytest = "^7.4.2"
 tox = "^3.24.4"
